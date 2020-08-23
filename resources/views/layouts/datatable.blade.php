@@ -32,13 +32,13 @@
                             <tr>
                                 <td class="center hidden-phone">
                                     <form action="{{ route($config['route-delete'], ['stockpile' => $row->uuid]) }}"
-                                          method="post" id="delete-data{{$row->id}}">
+                                          method="post" id="delete-{{$row->id}}">
                                         @csrf
                                         @method('DELETE')
                                     </form>
                                     <a class="badge bg-important"
                                        href="{{ route($config['route-delete'], ['stockpile' => $row->uuid]) }}"
-                                       onclick="event.preventDefault();document.getElementById('delete-data{{ $row->id }}').submit();">
+                                       onclick="event.preventDefault();document.getElementById('delete-{{ $row->id }}').submit();">
                                         <i class="fa fa-trash-o"></i>
                                     </a>
                                     <a href="{{ route($config['route-edit'], ['stockpile' => $row->uuid]) }}"
