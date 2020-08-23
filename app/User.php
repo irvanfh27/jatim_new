@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'phone', 'stockpile_id', 'active', 'uuid'
     ];
 
     /**
@@ -36,4 +36,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    protected $appends = ['status'];
+
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
+    public function getStatusAttribute()
+    {
+        if ($this->active == 1) {
+            $status = 'Active';
+        } else {
+            $status = 'Inactive';
+        }
+        return $status;
+    }
 }

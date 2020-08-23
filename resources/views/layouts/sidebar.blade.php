@@ -97,7 +97,7 @@
                     <span>Configuration</span>
                 </a>
                 <ul class="sub">
-                    <li><a class="{{ request()->segment(2) == 'users' ? ' active' : '' }}" href="lobby.html">Users</a></li>
+                    <li><a class="{{ request()->segment(2) == 'users' ? ' active' : '' }}" href="{{ route('configuration.users.index') }}">Users</a></li>
                     <li><a class="{{ request()->segment(2) == 'modules' ? ' active' : '' }}" href="chat_room.html">Modules</a></li>
                     <li><a class="{{ request()->segment(2) == 'stockpiles' ? ' active' : '' }}" href="{{ route('configuration.stockpiles.index') }}">Stockpiles</a></li>
                 </ul>

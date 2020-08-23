@@ -31,17 +31,17 @@
                         @foreach($data as $row)
                             <tr>
                                 <td class="center hidden-phone">
-                                    <form action="{{ route($config['route-delete'], ['stockpile' => $row->uuid]) }}"
+                                    <form action="{{ route($config['route-delete'], $row->uuid) }}"
                                           method="post" id="delete-{{$row->id}}">
                                         @csrf
                                         @method('DELETE')
                                     </form>
                                     <a class="badge bg-important"
-                                       href="{{ route($config['route-delete'], ['stockpile' => $row->uuid]) }}"
+                                       href="{{ route($config['route-delete'], $row->uuid) }}"
                                        onclick="event.preventDefault();document.getElementById('delete-{{ $row->id }}').submit();">
                                         <i class="fa fa-trash-o"></i>
                                     </a>
-                                    <a href="{{ route($config['route-edit'], ['stockpile' => $row->uuid]) }}"
+                                    <a href="{{ route($config['route-edit'], $row->uuid) }}"
                                        class="badge bg-warning"
                                        title="Edit">
                                         <i class="fa fa-edit"></i>

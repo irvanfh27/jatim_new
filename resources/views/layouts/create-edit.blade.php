@@ -12,6 +12,9 @@
                               action="{{ $config['route'] }}">
                             @csrf
                             @method($config['method'])
+                            @if(last(request()->segments()) == 'create')
+                                <input type="hidden" value="{{ \Illuminate\Support\Str::uuid() }}" name="uuid">
+                            @endif
                             @foreach($forms as $form)
                                 @if ($form['type'] == 'text')
                                     <div class="form-group @error($form['name']) has-error @endif">
@@ -44,6 +47,42 @@
                                                    name="{{ $form['name'] }}"
                                                    type="number" placeholder="{{ $form['place_holder'] }}"
                                                    value="{{ isset($data) ? $data[$form['name']] : old($form['name']) }}"/>
+                                            @error($form['name'])
+                                            <p class="help-block">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                @elseif($form['type'] == 'email')
+                                    <div class="form-group @error($form['name']) has-error @endif">
+                                        <label for="{{ $form['name'] }}"
+                                               class="control-label col-lg-2">{{ $form['label'] }}
+                                            @if($form['mandatory']==true)
+                                                <span style="color: red;">*</span>
+                                            @endif
+                                        </label>
+                                        <div class="col-lg-5">
+                                            <input class=" form-control" id="{{ $form['name'] }}"
+                                                   name="{{ $form['name'] }}"
+                                                   type="email" placeholder="{{ $form['place_holder'] }}"
+                                                   value="{{ isset($data) ? $data[$form['name']] : old($form['name']) }}"/>
+                                            @error($form['name'])
+                                            <p class="help-block">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                @elseif($form['type'] == 'password')
+                                    <div class="form-group @error($form['name']) has-error @endif">
+                                        <label for="{{ $form['name'] }}"
+                                               class="control-label col-lg-2">{{ $form['label'] }}
+                                            @if($form['mandatory']==true)
+                                                <span style="color: red;">*</span>
+                                            @endif
+                                        </label>
+                                        <div class="col-lg-5">
+                                            <input class=" form-control" id="{{ $form['name'] }}"
+                                                   name="{{ $form['name'] }}"
+                                                   type="password" placeholder="{{ $form['place_holder'] }}"
+                                                   value="{{ old($form['name']) }}"/>
                                             @error($form['name'])
                                             <p class="help-block">{{ $message }}</p>
                                             @enderror
