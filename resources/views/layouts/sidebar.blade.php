@@ -2,31 +2,32 @@
     <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
-            <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a>
+            <p class="centered"><a href="profile.html"><img src="{{ asset('/') }}img/ui-sam.jpg" class="img-circle" width="80"></a>
             </p>
             <h5 class="centered">{{ Auth::user()->name }}</h5>
             <li class="mt">
-                <a href="index.html">
+                <a class="{{ Request::route()->getName() == 'home' ? ' active' : '' }}" href="{{ route('home') }}">
                     <i class="fa fa-dashboard"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="sub-menu">
-                <a href="javascript:;">
+                <a class="{{ request()->segment(1) == 'nota-timbang' ? ' active' : '' }}" href="javascript:;">
                     <i class="fa fa-desktop"></i>
-                    <span>UI Elements</span>
+                    <span>Nota Timbang</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="general.html">General</a></li>
-                    <li><a href="buttons.html">Buttons</a></li>
-                    <li><a href="panels.html">Panels</a></li>
-                    <li><a href="font_awesome.html">Font Awesome</a></li>
+                    <li><a class="{{ request()->segment(2) == 'input-nota-timbang' ? ' active' : '' }}" href="general.html">Input Nota Timbang</a></li>
+                    <li><a href="buttons.html">Search Nota Timbang</a></li>
+                    <li><a href="panels.html">Input Nota Timbang(NEW)</a></li>
+                    <li><a href="buttons.html">Search Nota Timbang(NEW)</a></li>
+                    <li><a href="font_awesome.html">Import Data Timbangan</a></li>
                 </ul>
             </li>
             <li class="sub-menu">
                 <a href="javascript:;">
-                    <i class="fa fa-cogs"></i>
-                    <span>Components</span>
+                    <i class="fa fa-money"></i>
+                    <span>Payment</span>
                 </a>
                 <ul class="sub">
                     <li><a href="grids.html">Grids</a></li>
@@ -39,9 +40,9 @@
                 </ul>
             </li>
             <li class="sub-menu">
-                <a class="active" href="javascript:;">
+                <a href="javascript:;">
                     <i class="fa fa-book"></i>
-                    <span>Extra Pages</span>
+                    <span>Invoice</span>
                 </a>
                 <ul class="sub">
                     <li class="active"><a href="blank.html">Blank Page</a></li>
@@ -58,7 +59,7 @@
             <li class="sub-menu">
                 <a href="javascript:;">
                     <i class="fa fa-tasks"></i>
-                    <span>Forms</span>
+                    <span>Contracts</span>
                 </a>
                 <ul class="sub">
                     <li><a href="form_component.html">Form Components</a></li>
@@ -70,7 +71,7 @@
             <li class="sub-menu">
                 <a href="javascript:;">
                     <i class="fa fa-th"></i>
-                    <span>Data Tables</span>
+                    <span>Sales</span>
                 </a>
                 <ul class="sub">
                     <li><a href="basic_table.html">Basic Table</a></li>
@@ -78,17 +79,10 @@
                     <li><a href="advanced_table.html">Advanced Table</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="inbox.html">
-                    <i class="fa fa-envelope"></i>
-                    <span>Mail </span>
-                    <span class="label label-theme pull-right mail-info">2</span>
-                </a>
-            </li>
             <li class="sub-menu">
                 <a href="javascript:;">
                     <i class=" fa fa-bar-chart-o"></i>
-                    <span>Charts</span>
+                    <span>Reports</span>
                 </a>
                 <ul class="sub">
                     <li><a href="morris.html">Morris</a></li>
@@ -98,20 +92,35 @@
                 </ul>
             </li>
             <li class="sub-menu">
+                <a class="{{ request()->segment(1) == 'configuration' ? ' active' : '' }}" href="javascript:;">
+                    <i class="fa fa-cogs"></i>
+                    <span>Configuration</span>
+                </a>
+                <ul class="sub">
+                    <li><a class="{{ request()->segment(2) == 'users' ? ' active' : '' }}" href="lobby.html">Users</a></li>
+                    <li><a class="{{ request()->segment(2) == 'modules' ? ' active' : '' }}" href="chat_room.html">Modules</a></li>
+                    <li><a class="{{ request()->segment(2) == 'stockpiles' ? ' active' : '' }}" href="{{ route('configuration.stockpiles.index') }}">Stockpiles</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
                 <a href="javascript:;">
-                    <i class="fa fa-comments-o"></i>
-                    <span>Chat Room</span>
+                    <i class="fa fa-cogs"></i>
+                    <span>Data Vendor</span>
                 </a>
                 <ul class="sub">
                     <li><a href="lobby.html">Lobby</a></li>
                     <li><a href="chat_room.html"> Chat Room</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="google_maps.html">
-                    <i class="fa fa-map-marker"></i>
-                    <span>Google Maps </span>
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-cogs"></i>
+                    <span>PO</span>
                 </a>
+                <ul class="sub">
+                    <li><a href="lobby.html">Lobby</a></li>
+                    <li><a href="chat_room.html"> Chat Room</a></li>
+                </ul>
             </li>
         </ul>
         <!-- sidebar menu end-->
