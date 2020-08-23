@@ -106,8 +106,6 @@ class StockpileController extends Controller
         $request->validate($this->rules);
         $input = $request->all();
         $input['created_by'] = auth()->user()->id;
-        $input['uuid'] = Str::uuid();
-
         Stockpile::insert($input);
 
         return redirect()->route('configuration.stockpiles.index');
