@@ -18,8 +18,8 @@
     <link href="{{ asset('/') }}lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!--external css-->
     <link href="{{ asset('/') }}lib/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-    @stack('css')
-    <!-- Custom styles for this template -->
+@stack('css')
+<!-- Custom styles for this template -->
     <link href="{{ asset('/') }}css/style.css" rel="stylesheet">
     <link href="{{ asset('/') }}css/style-responsive.css" rel="stylesheet">
 
@@ -42,7 +42,9 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
-            @yield('content')
+            <div id="app">
+                @yield('content')
+            </div>
         </section>
         <!-- /wrapper -->
     </section>
@@ -68,10 +70,12 @@
 {{--            </a>--}}
 {{--        </div>--}}
 {{--    </footer>--}}
-    <!--footer end-->
+<!--footer end-->
 </section>
 <!-- js placed at the end of the document so the pages load faster -->
-{{--<script src="{{ asset('js/app.js') }}"></script>--}}
+<script src="{{ route('js.dynamic') }}"></script>
+<script src="{{ asset('js/app.js') }}?{{ uniqid() }}"></script>
+
 <script src="{{ asset('/') }}lib/jquery/jquery.min.js"></script>
 <script src="{{ asset('/') }}lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="{{ asset('/') }}lib/jquery-ui-1.9.2.custom.min.js"></script>

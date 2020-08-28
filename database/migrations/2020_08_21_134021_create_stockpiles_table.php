@@ -14,7 +14,7 @@ class CreateStockpilesTable extends Migration
     public function up()
     {
         Schema::create('stockpiles', function (Blueprint $table) {
-            $table->id();
+            $table->id('stockpile_id');
             $table->uuid('uuid')->nullable();
             $table->string('code', '3')->nullable();
             $table->string('name', '50')->nullable();

@@ -2,15 +2,25 @@
 
 namespace App\Model\Configuration;
 
+use App\Traits\SearchTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stockpile extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SearchTrait;
+
+    protected $primaryKey = 'stockpile_id';
 
     protected $appends = ['status'];
+
     protected $fillable = ['uuid', 'code', 'name', 'address', 'active', 'created_by', 'updated_by'];
+
+    protected $searchable = [
+        'id' => [
+            'search_relation' => false,
+        ],
+    ];
 
     public function getStatusAttribute()
     {

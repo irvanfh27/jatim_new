@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +38,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    protected $appends = ['status'];
+
+    /**
+     * Declare Accessor
+     *
+     * @var array
+     */
+    protected $appends = [
+        'status', 'all_permissions', 'all_roles'
+    ];
 
 
     public function getRouteKeyName()
@@ -44,6 +54,11 @@ class User extends Authenticatable
         return 'uuid';
     }
 
+    /**
+     * Get user status
+     *
+     * @return string
+     */
     public function getStatusAttribute()
     {
         if ($this->active == 1) {
@@ -52,5 +67,33 @@ class User extends Authenticatable
             $status = 'Inactive';
         }
         return $status;
+    }
+
+    /**
+     * Get User Permissions
+     * @return array
+     */
+    public function getAllpermissionsAttribute()
+    {
+        $res = [];
+        $allPermissions = $this->getAllPermissions();
+        foreach ($allPermissions as $p) {
+            $res[] = $p->name;
+        }
+        return $res;
+    }
+
+    /**
+     * Get User Roles
+     * @return array
+     */
+    public function getAllRolesAttribute()
+    {
+        $res = [];
+        $roles = $this->roles;
+        foreach ($roles as $p) {
+            $res[] = $p->name;
+        }
+        return $res;
     }
 }

@@ -30,4 +30,15 @@ Route::middleware('auth')->group(function () {
             'users' => 'UserController',
         ]);
     });
+
+    Route::name('po.')->prefix('po')->namespace('PO\\')->group(function () {
+        Route::resources([
+            'uoms' => 'UomController',
+        ]);
+    });
+});
+
+
+Route::name('js.')->group(function () {
+    Route::get('dynamic.js', 'JsController@dynamic')->name('dynamic');
 });
