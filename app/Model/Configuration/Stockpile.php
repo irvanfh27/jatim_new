@@ -17,7 +17,10 @@ class Stockpile extends Model
     protected $fillable = ['uuid', 'code', 'name', 'address', 'active', 'created_by', 'updated_by'];
 
     protected $searchable = [
-        'id' => [
+        'code' => [
+            'search_relation' => false,
+        ],
+        'name' => [
             'search_relation' => false,
         ],
     ];

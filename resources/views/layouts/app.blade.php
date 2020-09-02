@@ -32,50 +32,53 @@
 </head>
 
 <body>
-<section id="container">
-    <!--header start-->
-@include('layouts.header')
-<!--header end-->
-    <!--sidebar start-->
-@include('layouts.sidebar')
-<!--sidebar end-->
-    <!--main content start-->
-    <section id="main-content">
-        <section class="wrapper">
-            <div id="app">
-                @yield('content')
-            </div>
+<div id="app">
+    <section id="container">
+        <!--header start-->
+    @include('layouts.header')
+    <!--header end-->
+        <!--sidebar start-->
+    @include('layouts.sidebar')
+    <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <div>
+                    @yield('content')
+                </div>
+            </section>
+            <!-- /wrapper -->
         </section>
-        <!-- /wrapper -->
+        <!-- /MAIN CONTENT -->
+        <!--main content end-->
+        <!--footer start-->
+    {{--    <footer class="site-footer">--}}
+    {{--        <div class="text-center">--}}
+    {{--            <p>--}}
+    {{--                &copy; Copyrights <strong>Dashio</strong>. All Rights Reserved--}}
+    {{--            </p>--}}
+    {{--            <div class="credits">--}}
+    {{--                <!----}}
+    {{--                  You are NOT allowed to delete the credit link to TemplateMag with free version.--}}
+    {{--                  You can delete the credit link only if you bought the pro version.--}}
+    {{--                  Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/--}}
+    {{--                  Licensing information: https://templatemag.com/license/--}}
+    {{--                -->--}}
+    {{--                Created with Dashio template by <a href="https://templatemag.com/">TemplateMag</a>--}}
+    {{--            </div>--}}
+    {{--            <a href="blank.html#" class="go-top">--}}
+    {{--                <i class="fa fa-angle-up"></i>--}}
+    {{--            </a>--}}
+    {{--        </div>--}}
+    {{--    </footer>--}}
+    <!--footer end-->
     </section>
-    <!-- /MAIN CONTENT -->
-    <!--main content end-->
-    <!--footer start-->
-{{--    <footer class="site-footer">--}}
-{{--        <div class="text-center">--}}
-{{--            <p>--}}
-{{--                &copy; Copyrights <strong>Dashio</strong>. All Rights Reserved--}}
-{{--            </p>--}}
-{{--            <div class="credits">--}}
-{{--                <!----}}
-{{--                  You are NOT allowed to delete the credit link to TemplateMag with free version.--}}
-{{--                  You can delete the credit link only if you bought the pro version.--}}
-{{--                  Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/--}}
-{{--                  Licensing information: https://templatemag.com/license/--}}
-{{--                -->--}}
-{{--                Created with Dashio template by <a href="https://templatemag.com/">TemplateMag</a>--}}
-{{--            </div>--}}
-{{--            <a href="blank.html#" class="go-top">--}}
-{{--                <i class="fa fa-angle-up"></i>--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </footer>--}}
-<!--footer end-->
-</section>
+
+</div>
+
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="{{ route('js.dynamic') }}"></script>
 <script src="{{ asset('js/app.js') }}?{{ uniqid() }}"></script>
-
 <script src="{{ asset('/') }}lib/jquery/jquery.min.js"></script>
 <script src="{{ asset('/') }}lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="{{ asset('/') }}lib/jquery-ui-1.9.2.custom.min.js"></script>

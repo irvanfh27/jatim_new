@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\PO;
+namespace {{ namespace }};
 
-use App\Http\Controllers\Controller;
-use App\Model\PO\Uom;
+use {{ rootNamespace }}Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UomController extends Controller
+class {{ class }} extends Controller
 {
     protected $forms;
     protected $rules;
 
     public function __construct()
     {
+
         $this->forms = [
-            array('type' => 'text', 'label' => 'Uom', 'name' => 'uom_type', 'place_holder' => '', 'mandatory' => true),
+            array('type' => 'text', 'label' => '', 'name' => '', 'place_holder' => '', 'mandatory' => true),
+            array('type' => 'textarea', 'label' => '', 'name' => '', 'place_holder' => '', 'mandatory' => false),
+            array('type' => 'select_option', 'label' => '', 'name' => '', 'variable' => '', 'option_value' => 'value', '' => 'label', 'mandatory' => true),
         ];
 
         $this->rules = [
-            'uom_type' => 'required'
         ];
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -29,19 +29,16 @@ class UomController extends Controller
      */
     public function index()
     {
-        $config = [
-            'title' => 'Uom',
-            'route-add' => 'po.uoms.create',
-            'route-edit' => 'po.uoms.edit',
-            'route-delete' => 'po.uoms.destroy'
+         $config = [
+            'title' => '',
+            'route-add' => '',
+            'route-edit' => '',
+            'route-delete' => ''
         ];
 
         $columns = [
-            array('title' => 'Uom', 'field' => 'uom_type'),
+            array('title' => '', 'field' => ''),
         ];
-
-        $data = Uom::all();
-
         return view('layouts.datatable', compact(['config', 'columns', 'data']));
     }
 
@@ -52,10 +49,10 @@ class UomController extends Controller
      */
     public function create()
     {
-        $config = [
-            'title' => 'Create ',
+       $config = [
+            'title' => 'Create',
             'size' => 8,
-            'route' => route('po.uoms.store'),
+            'route' => ,
             'method' => 'POST'
         ];
 
@@ -68,7 +65,7 @@ class UomController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -76,18 +73,16 @@ class UomController extends Controller
         $request->validate($this->rules);
         $input = $request->all();
         $input['created_by'] = auth()->user()->id;
-        Uom::create($input);
-
-        return redirect()->route('po.uoms.index');
+        return redirect()->route('.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Uom $uom
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Uom $uom)
+    public function show($id)
     {
         //
     }
@@ -95,19 +90,19 @@ class UomController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Uom $uom
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Uom $uom)
+    public function edit($id)
     {
         $config = [
-            'title' => 'Edit Uom',
+            'title' => 'Edit ',
             'size' => 8,
-            'route' => route('po.uoms.update', $uom),
+            'route' => route('', $id),
             'method' => 'PATCH'
         ];
 
-        $data = $uom;
+        $data = ;
 
         return view('layouts.create-edit', [
             'config' => $config,
@@ -119,29 +114,28 @@ class UomController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Uom $uom
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Uom $uom)
+    public function update(Request $request, $id)
     {
         $request->validate($this->rules);
         $input = $request->all();
         $input['updated_by'] = auth()->user()->id;
-        $uom->update($input);
-        return redirect()->route('po.uoms.index');
+        $->update($input);
+        return redirect()->route('.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Uom $uom
+     * @param  int  $id
      * @return \Illuminate\Http\Response
-     * @throws \Exception
      */
-    public function destroy(Uom $uom)
+    public function destroy($id)
     {
-        $uom->delete();
-        return redirect()->route('po.uoms.index');
+        ::where('uuid', $id)->delete();
+        return redirect()->route('.index');
     }
 }

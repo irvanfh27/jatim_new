@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\PO;
 
 use App\Http\Controllers\Controller;
-use App\Model\PO\Uom;
+use App\Model\PO\MasterSign;
 use Illuminate\Http\Request;
 
-class UomController extends Controller
+class MasterSignController extends Controller
 {
     protected $forms;
     protected $rules;
@@ -14,11 +14,13 @@ class UomController extends Controller
     public function __construct()
     {
         $this->forms = [
-            array('type' => 'text', 'label' => 'Uom', 'name' => 'uom_type', 'place_holder' => '', 'mandatory' => true),
+            array('type' => 'text', 'label' => 'Name', 'name' => 'name', 'place_holder' => '', 'mandatory' => true),
+            array('type' => 'text', 'label' => 'Jabatan', 'name' => 'jabatan', 'place_holder' => '', 'mandatory' => true),
         ];
 
         $this->rules = [
-            'uom_type' => 'required'
+            'name' => 'required',
+            'jabatan' => 'required'
         ];
     }
 
@@ -30,17 +32,18 @@ class UomController extends Controller
     public function index()
     {
         $config = [
-            'title' => 'Uom',
-            'route-add' => 'po.uoms.create',
-            'route-edit' => 'po.uoms.edit',
-            'route-delete' => 'po.uoms.destroy'
+            'title' => 'Sign',
+            'route-add' => 'po.signs.create',
+            'route-edit' => 'po.signs.edit',
+            'route-delete' => 'po.signs.destroy'
         ];
 
         $columns = [
-            array('title' => 'Uom', 'field' => 'uom_type'),
+            array('title' => 'Name', 'field' => 'name'),
+            array('title' => 'Jabatan', 'field' => 'jabatan'),
         ];
 
-        $data = Uom::all();
+        $data = MasterSign::all();
 
         return view('layouts.datatable', compact(['config', 'columns', 'data']));
     }
@@ -53,9 +56,9 @@ class UomController extends Controller
     public function create()
     {
         $config = [
-            'title' => 'Create ',
+            'title' => 'Create Sign',
             'size' => 8,
-            'route' => route('po.uoms.store'),
+            'route' => route('po.signs.store'),
             'method' => 'POST'
         ];
 
@@ -76,18 +79,18 @@ class UomController extends Controller
         $request->validate($this->rules);
         $input = $request->all();
         $input['created_by'] = auth()->user()->id;
-        Uom::create($input);
+        MasterSign::create($input);
 
-        return redirect()->route('po.uoms.index');
+        return redirect()->route('po.signs.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Uom $uom
+     * @param \App\MasterSign $sign
      * @return \Illuminate\Http\Response
      */
-    public function show(Uom $uom)
+    public function show(MasterSign $sign)
     {
         //
     }
@@ -95,19 +98,19 @@ class UomController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Uom $uom
+     * @param \App\MasterSign $sign
      * @return \Illuminate\Http\Response
      */
-    public function edit(Uom $uom)
+    public function edit(MasterSign $sign)
     {
         $config = [
-            'title' => 'Edit Uom',
+            'title' => 'Edit Sign',
             'size' => 8,
-            'route' => route('po.uoms.update', $uom),
+            'route' => route('po.signs.update', $sign),
             'method' => 'PATCH'
         ];
 
-        $data = $uom;
+        $data = $sign;
 
         return view('layouts.create-edit', [
             'config' => $config,
@@ -120,28 +123,27 @@ class UomController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Uom $uom
+     * @param \App\MasterSign $sign
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Uom $uom)
+    public function update(Request $request, MasterSign $sign)
     {
         $request->validate($this->rules);
         $input = $request->all();
         $input['updated_by'] = auth()->user()->id;
-        $uom->update($input);
-        return redirect()->route('po.uoms.index');
+        $sign->update($input);
+        return redirect()->route('po.signs.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Uom $uom
+     * @param \App\MasterSign $sign
      * @return \Illuminate\Http\Response
-     * @throws \Exception
      */
-    public function destroy(Uom $uom)
+    public function destroy(MasterSign $sign)
     {
-        $uom->delete();
-        return redirect()->route('po.uoms.index');
+        $sign->delete();
+        return redirect()->route('po.signs.index');
     }
 }

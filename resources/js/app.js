@@ -7,6 +7,7 @@ window.Vue = require('vue');
 
 require('./bootstrap');
 require('./component');
+require('./library');
 
 import router from './router';
 
@@ -36,5 +37,30 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data() {
+        return {
+            user: AuthUser,
+        }
+    },
+    methods: {
+        userCan(permission) {
+            if (this.user && this.user.allPermissions.includes(permission)) {
+                return true;
+            }
+            return false;
+        },
+        userRole(role) {
+            if (this.user && this.user.all_roles.includes(role)) {
+                return true;
+            }
+            return false;
+        },
+        userID() {
+            return JSON.parse(this.user);
+        },
+        MakeUrl(path) {
+            return BaseUrl(path);
+        }
+    },
 });

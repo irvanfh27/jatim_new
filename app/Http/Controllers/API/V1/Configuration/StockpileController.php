@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Configuration;
+namespace App\Http\Controllers\API\V1\Configuration;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\StockpileResource;
 use App\Model\Configuration\Stockpile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class StockpileController extends Controller
 {
-
     protected $weightRule;
     protected $status;
     protected $forms;
@@ -51,26 +51,18 @@ class StockpileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $config = [
-            'title' => 'Stockpiles',
-            'route-add' => 'configuration.stockpiles.create',
-            'route-edit' => 'configuration.stockpiles.edit',
-            'route-delete' => 'configuration.stockpiles.destroy'
-        ];
+        $searchValue = $request->input('query');
+        $perPage = $request->perPage;
+        $query = Stockpile::searchQuery($searchValue);
 
-        $columns = [
-            array('title' => 'Code', 'field' => 'code'),
-            array('title' => 'Name', 'field' => 'name'),
-            array('title' => 'Address', 'field' => 'address'),
-            array('title' => 'Status', 'field' => 'status'),
-
-        ];
-
-        $data = Stockpile::all();
-
-        return view('layouts.datatable', compact(['config', 'columns', 'data']));
+        if ($perPage) {
+            $query = $query->take(20)->paginate(20);
+        } else {
+            $query = $query->paginate($perPage);
+        }
+        return StockpileResource::collection($query);
     }
 
     /**
@@ -105,10 +97,11 @@ class StockpileController extends Controller
     {
         $request->validate($this->rules);
         $input = $request->all();
-        $input['created_by'] = auth()->user()->id;
-        Stockpile::create($input);
-
-        return redirect()->route('configuration.stockpiles.index');
+        $input['uuid'] = Str::uuid();
+        $input['created_by'] = auth('api')->user()->id;
+        Stockpile::insert($input);
+//
+//        return redirect()->route('configuration.stockpiles.index');
     }
 
     /**

@@ -4,62 +4,24 @@
             <section class="panel">
                 <header class="panel-heading wht-bg">
                     <h4 class="gen-case">
-                        Inbox (3)
-                        <form action="#" class="pull-right mail-src-position">
+                        {{ config.title }}
+                        <div class="pull-right mail-src-position">
                             <div class="input-append">
-                                <input type="text" class="form-control " placeholder="Search Mail">
+                                <input type="text" class="form-control" placeholder="Search" v-on:keyup.enter="search"
+                                       v-model="params.query">
                             </div>
-                        </form>
+                        </div>
                     </h4>
                 </header>
-                <div class="panel-body minimal">
+                <div class="panel-body minimal" v-if="loading">
                     <div class="mail-option">
-                        <div class="chk-all">
-                            <div class="pull-left mail-checkbox">
-                                <input type="checkbox" class="">
-                            </div>
-                            <div class="btn-group">
-                                <a data-toggle="dropdown" href="#" class="btn mini all">
-                                    All
-                                    <i class="fa fa-angle-down "></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#"> None</a></li>
-                                    <li><a href="#"> Read</a></li>
-                                    <li><a href="#"> Unread</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="btn-group">
-                            <a data-original-title="Refresh" data-placement="top" data-toggle="dropdown" href="#"
-                               class="btn mini tooltips">
-                                <i class=" fa fa-refresh"></i>
-                            </a>
-                        </div>
-                        <div class="btn-group hidden-phone">
-                            <a data-toggle="dropdown" href="#" class="btn mini blue">
-                                More
-                                <i class="fa fa-angle-down "></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-pencil"></i> Mark as Read</a></li>
-                                <li><a href="#"><i class="fa fa-ban"></i> Spam</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                            </ul>
-                        </div>
-                        <div class="btn-group">
-                            <a data-toggle="dropdown" href="#" class="btn mini blue">
-                                Move to
-                                <i class="fa fa-angle-down "></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-pencil"></i> Mark as Read</a></li>
-                                <li><a href="#"><i class="fa fa-ban"></i> Spam</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
-                            </ul>
-                        </div>
+                        <router-link
+                            v-if="config.route_create"
+                            class="btn btn-theme"
+                            :to="{ name: config.route_create }"
+                        ><i class="fa fa-plus"></i> Add
+                            Data
+                        </router-link>
                         <ul class="unstyled inbox-pagination">
                             <li><span>1-50 of 99</span></li>
                             <li>
@@ -70,175 +32,68 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="table-inbox-wrap ">
-                        <table class="table table-inbox table-hover">
-                            <tbody>
-                            <tr class="unread">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message  dont-show"><a href="mail_view.html">Google Inc.</a></td>
-                                <td class="view-message "><a href="mail_view.html">Your new account is ready.</a></td>
-                                <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                <td class="view-message  text-right">08:10 AM</td>
-                            </tr>
-                            <tr class="unread">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show"><a href="mail_view.html">Mark Thompson</a></td>
-                                <td class="view-message"><a href="mail_view.html">Last project updates</a></td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">March 15</td>
-                            </tr>
-                            <tr class="unread">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show"><a href="mail_view.html">Wonder Corp.</a></td>
-                                <td class="view-message"><a href="mail_view.html">Thanks for your registration</a></td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">March 15</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show"><a href="mail_view.html">Facebook</a></td>
-                                <td class="view-message"><a href="mail_view.html">New Friendship Request</a></td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">March 13</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star inbox-started"></i></td>
-                                <td class="view-message dont-show"><a href="mail_view.html">Mark Webber <span
-                                    class="label label-danger pull-right">urgent</span></a></td>
-                                <td class="view-message"><a href="mail_view.html">The server is down</a></td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">March 09</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star inbox-started"></i></td>
-                                <td class="view-message dont-show"><a href="mail_view.html">Facebook</a></td>
-                                <td class="view-message"><a href="mail_view.html">New message from Patrick S.</a></td>
-                                <td class="view-message inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                <td class="view-message text-right">March 08</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star inbox-started"></i></td>
-                                <td class="view-message dont-show">Paypal inc.</td>
-                                <td class="view-message">New payment received</td>
-                                <td class="view-message inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                <td class="view-message text-right">March 04</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show">Andrea <span class="label label-success pull-right">girlfriend</span>
-                                </td>
-                                <td class="view-message view-message">Weekend plans</td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">March 04</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show">David Green</td>
-                                <td class="view-message view-message">Soccer tickets</td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">February 22</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show">Evelyn <span class="label label-info pull-right">family</span>
-                                </td>
-                                <td class="view-message view-message">Surprise party</td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">February 19</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star inbox-started"></i></td>
-                                <td class="view-message dont-show">Martin Moore</td>
-                                <td class="view-message">Hey mate!</td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">February 17</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star inbox-started"></i></td>
-                                <td class="dont-show">Facebook</td>
-                                <td class="view-message">Paul published on your wall</td>
-                                <td class="view-message inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                <td class="view-message text-right">February 14</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show">Steve Stoll</td>
-                                <td class="view-message">Update developed</td>
-                                <td class="view-message inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                <td class="view-message text-right">February 11</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="dont-show">Laura Anton</td>
-                                <td class="view-message view-message">New subscription</td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">January 14</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show">Ryanair</td>
-                                <td class="view-message">Your flight tickets</td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">January 07</td>
-                            </tr>
-                            <tr class="">
-                                <td class="inbox-small-cells">
-                                    <input type="checkbox" class="mail-checkbox">
-                                </td>
-                                <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                <td class="view-message dont-show">Twitter</td>
-                                <td class="view-message">Password reset</td>
-                                <td class="view-message inbox-small-cells"></td>
-                                <td class="view-message text-right">January 04</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="table table-bordered table-striped table-condensed cf">
+                        <thead class="cf">
+                        <tr>
+                            <th>Action</th>
+                            <th
+                                v-for="column in columns"
+                                style="overflow:hidden; white-space:nowrap"
+                            >{{ column.title }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item, index) in data">
+                            <td v-if="config.action">
+                                <router-link
+                                    v-if="config.route_view"
+                                    class="badge badge-primary"
+                                    :to="{ name: config.route_view , params: { id: item.id }}"
+                                >View
+                                </router-link>
+
+                                <router-link
+                                    v-if="config.route_edit && item.status === 1 && item.is_printed === 0"
+                                    class="badge badge-warning"
+                                    :to="{ name: config.route_edit , params: { id: item.id }}"
+                                >Edit
+                                </router-link>
+
+                                <router-link
+                                    v-if="config.route_confirm"
+                                    class="badge badge-warning"
+                                    :to="{ name: config.route_confirm , params:{ id: item.id }}"
+                                >Confirm
+                                </router-link>
+                                <button
+                                    @click="replenish(item.id)"
+                                    class="badge badge-warning"
+                                    v-if="config.route_replenish && item.status === 3"
+                                >Replenish
+                                </button>
+                            </td>
+                            <td v-for="column in columns">
+                                <span v-html="item[column.field]" v-if="column.type === 'html'"></span>
+                                <p v-else-if="column.type === 'file'">
+                                    <a
+                                        href="#"
+                                        class="badge badge-info"
+                                        @click="showFile(item[column.field], item.file)"
+                                        v-if="column.type === 'file' && item.file !== '' && item.file !== null"
+                                    >{{ item.file }}</a>
+                                </p>
+                                <p
+                                    v-else-if="column.type === 'price'"
+                                >{{ item[column.field] | toIDR }}</p>
+                                <p v-else>{{ item[column.field] }}</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-body" v-else>
+                    <d-loading/>
                 </div>
             </section>
         </div>
@@ -247,7 +102,111 @@
 
 <script>
     export default {
-        name: "Table"
+        name: "Table",
+        props: ["columns", "config"],
+        data() {
+            return {
+                user: {},
+                perPages: ["5", "10", "25", "50", "100", "150", "300"],
+                buttonClasses: "btn btn-primary",
+                selected: [0],
+                data: [],
+                loading: false,
+                pagination: {
+                    current_page: 1
+                },
+                params: {
+                    query: null,
+                    start: null,
+                    page: 1,
+                    end: null,
+                    perPage: 5
+                }
+            };
+        },
+        async mounted() {
+            await this.getData();
+            this.user = AuthUser;
+        },
+        methods: {
+            async search() {
+                this.loading = false;
+                this.pagination = null;
+                try {
+                    await this.getData();
+                    this.loading = true;
+                } catch (e) {
+                    console.log(e);
+                }
+            },
+            async getData() {
+                axios
+                    .get(this.config.base_url, {
+                        params: this.params
+                        // params: {
+                        //     query: this.params.query,
+                        //     start: this.params.start,
+                        //     end: this.params.end,
+                        //     perPage: this.params.perPage,
+                        //     page: this.pagination.current_page
+                        // }
+                    })
+                    .then(res => {
+                        this.data = res.data.data;
+                        this.pagination = {
+                            first: res.data.links.first,
+                            last: res.data.links.last,
+                            prev: res.data.links.prev,
+                            next: res.data.links.next,
+                            from: res.data.meta.from,
+                            to: res.data.meta.to,
+                            total: res.data.meta.total,
+                            current_page: res.data.meta.current_page,
+                            last_page: res.data.meta.last_page,
+                            path: res.data.meta.path
+                        };
+
+                        this.loading = true;
+                    })
+                    .catch(e => {
+                        if (e.response.status === 500) {
+                            this.getData();
+                        }
+                        console.log(e.response);
+                    });
+            },
+            changePage(page) {
+                if (page > this.pagination.last_page) {
+                    page = this.pagination.last_page;
+                }
+                this.params.page = page;
+                this.getData();
+            },
+            print() {
+                this.$router.push({
+                    name: this.config.route_multiple_print,
+                    query: {id: this.selected}
+                });
+            }
+        },
+        computed: {
+            selectAll: {
+                get: function () {
+                    return this.data
+                        ? this.selected.length === this.data.length
+                        : false;
+                },
+                set: function (value) {
+                    let selected = [];
+                    if (value) {
+                        this.data.forEach(function (data) {
+                            selected.push(data.id);
+                        });
+                    }
+                    this.selected = selected;
+                }
+            }
+        }
     }
 </script>
 

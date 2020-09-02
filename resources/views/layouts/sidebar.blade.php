@@ -2,22 +2,29 @@
     <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
-            <p class="centered"><a href="profile.html"><img src="{{ asset('/') }}img/ui-sam.jpg" class="img-circle" width="80"></a>
+            <p class="centered"><a href="profile.html"><img src="{{ asset('/') }}img/ui-sam.jpg" class="img-circle"
+                                                            width="80"></a>
             </p>
             <h5 class="centered">{{ Auth::user()->name }}</h5>
-            <li class="mt">
-                <a class="{{ Request::route()->getName() == 'home' ? ' active' : '' }}" href="{{ route('home') }}">
-                    <i class="fa fa-dashboard"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
+            <router-link :to="{ name: 'dashboard'}" v-slot="{ href, navigate, isActive }">
+                <li class="mt" :class="[isActive && 'active']">
+                    <a :href="href" @click="navigate"><i class="fa fa-dashboard"></i>Dashboard</a>
+                </li>
+            </router-link>
+            {{--            <li class="mt">--}}
+            {{--                <a class="{{ Request::route()->getName() == 'home' ? ' active' : '' }}" href="{{ route('home') }}">--}}
+            {{--                    <i class="fa fa-dashboard"></i>--}}
+            {{--                    <span>Dashboard</span>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
             <li class="sub-menu">
                 <a class="{{ request()->segment(1) == 'nota-timbang' ? ' active' : '' }}" href="javascript:;">
                     <i class="fa fa-desktop"></i>
                     <span>Nota Timbang</span>
                 </a>
                 <ul class="sub">
-                    <li><a class="{{ request()->segment(2) == 'input-nota-timbang' ? ' active' : '' }}" href="general.html">Input Nota Timbang</a></li>
+                    <li><a class="{{ request()->segment(2) == 'input-nota-timbang' ? ' active' : '' }}"
+                           href="general.html">Input Nota Timbang</a></li>
                     <li><a href="buttons.html">Search Nota Timbang</a></li>
                     <li><a href="panels.html">Input Nota Timbang(NEW)</a></li>
                     <li><a href="buttons.html">Search Nota Timbang(NEW)</a></li>
@@ -97,9 +104,17 @@
                     <span>Configuration</span>
                 </a>
                 <ul class="sub">
-                    <li><a class="{{ request()->segment(2) == 'users' ? ' active' : '' }}" href="{{ route('configuration.users.index') }}">Users</a></li>
-                    <li><a class="{{ request()->segment(2) == 'modules' ? ' active' : '' }}" href="chat_room.html">Modules</a></li>
-                    <li><a class="{{ request()->segment(2) == 'stockpiles' ? ' active' : '' }}" href="{{ route('configuration.stockpiles.index') }}">Stockpiles</a></li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'users' ? ' active' : '' }}"
+                           href="{{ route('configuration.users.index') }}">Users</a>
+                    </li>
+                    <li><a class="{{ request()->segment(2) == 'modules' ? ' active' : '' }}" href="chat_room.html">Modules</a>
+                    </li>
+                    <router-link :to="{ name: 'stockpiles'}" v-slot="{ href, navigate, isActive }">
+                        <li :class="[isActive && 'active']">
+                            <a :href="href" @click="navigate">Stockpiles</a>
+                        </li>
+                    </router-link>
                 </ul>
             </li>
             <li class="sub-menu">
@@ -113,13 +128,27 @@
                 </ul>
             </li>
             <li class="sub-menu">
-                <a href="javascript:;">
+                <a class="{{ request()->segment(1) == 'po' ? ' active' : '' }}" href="javascript:;">
                     <i class="fa fa-cogs"></i>
                     <span>PO</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="lobby.html">Lobby</a></li>
-                    <li><a href="chat_room.html"> Chat Room</a></li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'uoms' ? ' active' : '' }}"
+                           href="{{ route('po.uoms.index') }}">Uom</a>
+                    </li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'group-items' ? ' active' : '' }}"
+                           href="{{ route('po.group-items.index') }}">Group Items</a>
+                    </li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'items' ? ' active' : '' }}"
+                           href="{{ route('po.items.index') }}">Items</a>
+                    </li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'signs' ? ' active' : '' }}"
+                           href="{{ route('po.signs.index') }}">Signs</a>
+                    </li>
                 </ul>
             </li>
         </ul>

@@ -13,14 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/home', function () {
+//    return view('welcome');
+    return redirect('/dashboard');
+});
 Route::get('/', function () {
 //    return view('welcome');
-    return redirect()->route('login');
+    return redirect('/login');
 });
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('home');
+Route::get('/dashboard/{any}', 'HomeController@index')->where('any', '.*');
 
 Route::middleware('auth')->group(function () {
 //    Configuration Route
@@ -34,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::name('po.')->prefix('po')->namespace('PO\\')->group(function () {
         Route::resources([
             'uoms' => 'UomController',
+            'group-items' => 'MasterGroupItemController',
+            'items' => 'MasterItemController',
+            'signs' => 'MasterSignController',
         ]);
     });
 });
