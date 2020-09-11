@@ -13,24 +13,24 @@
                 },
                 forms: [
                     {
-                        title: 'Code',
+                        label: 'Code',
                         model: 'code',
                         mandatory: true,
                     },
                     {
-                        title: 'Name',
+                        label: 'Name',
                         model: 'name',
                         mandatory: true,
                     },
                     {
-                        title: 'Address',
+                        label: 'Address',
                         model: 'address',
                         type: 'textarea',
                         placeholder: "",
                         mandatory: false,
                     },
                     {
-                        title: 'Freight Weight Rule',
+                        label: 'Freight Weight Rule',
                         model: 'freight_weight_rule',
                         type: "option",
                         text:'',
@@ -52,7 +52,7 @@
                         ],
                     },
                     {
-                        title: 'Curah Weight Rule',
+                        label: 'Curah Weight Rule',
                         model: 'curah_weight_rule',
                         mandatory: true,
                         type: "option",

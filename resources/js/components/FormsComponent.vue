@@ -10,7 +10,7 @@
                 <div class="panel-body minimal">
                     <div role="form" class="form-horizontal style-form">
                         <div class="form-group" v-bind:class="{'has-error': errors[form.model]}" v-for="form in forms">
-                            <label class="col-lg-2 control-label">{{ form.title }}
+                            <label class="col-lg-2 control-label">{{ form.label }}
                                 <span style="color: red;" v-if="form.mandatory">*</span>
                             </label>
                             <!--Select Option-->
