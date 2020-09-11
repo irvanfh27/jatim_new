@@ -33,8 +33,8 @@
                         label: 'Freight Weight Rule',
                         model: 'freight_weight_rule',
                         type: "option",
-                        text:'',
-                        value:'',
+                        text: 'title',
+                        value: 'value',
                         mandatory: true,
                         data: [
                             {
@@ -55,6 +55,8 @@
                         label: 'Curah Weight Rule',
                         model: 'curah_weight_rule',
                         mandatory: true,
+                        text: 'title',
+                        value: 'value',
                         type: "option",
                         data: [
                             {
@@ -72,9 +74,11 @@
                         ],
                     },
                     {
-                        title: 'Status',
+                        label: 'Status',
                         model: 'active',
                         type: "option",
+                        text: 'title',
+                        value: 'value',
                         mandatory: true,
                         data: [
                             {

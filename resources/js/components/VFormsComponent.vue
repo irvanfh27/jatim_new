@@ -1,6 +1,6 @@
 <template>
     <v-app id="inspire">
-        <v-form v-model="valid">
+        <v-form>
             <v-card>
                 <v-card-title>
                     <span class="headline">{{ config.title }}</span>
@@ -8,7 +8,8 @@
                 <v-card-text>
                     <v-container>
                         <v-row>
-                            <v-col cols="12" md="4" v-for="form in forms">
+                            <v-col cols="12" md="4" v-for="form in forms" v-bind:key="form.model">
+                                <!--                                DatePicker-->
                                 <v-dialog
                                     ref="dialog"
                                     v-model="modal"
@@ -33,12 +34,22 @@
                                         </v-btn>
                                     </v-date-picker>
                                 </v-dialog>
+                                <!--                                Select Option-->
                                 <v-autocomplete
+                                    v-model="data[form.model]"
                                     :items="form.data"
                                     :label="form.label"
                                     :item-value="form.value"
                                     :item-text="form.text"
-                                    v-else-if="form.type === 'select-option'"></v-autocomplete>
+                                    v-else-if="form.type === 'option'">
+
+                                </v-autocomplete>
+                                <v-textarea
+                                    v-model="data[form.model]"
+                                    :label="form.label"
+                                    v-else-if="form.type == 'textarea'"
+                                >
+                                </v-textarea>
                                 <v-text-field
                                     v-model="data[form.model]"
                                     :rules="form.rules"
@@ -46,85 +57,14 @@
                                     :label="form.label"
                                     v-else></v-text-field>
                             </v-col>
-
-                            <v-col cols="12" sm="6">
-                                <v-dialog v-model="dialog" persistent max-width="600px">
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                            color="warning"
-                                            dark
-                                            v-bind="attrs"
-                                            v-on="on"
-                                        >
-                                            Add Data
-                                        </v-btn>
-                                    </template>
-                                    <v-card>
-                                        <v-card-title>
-                                            <span class="headline">User Profile</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                            <v-container>
-                                                <v-row>
-                                                    <v-col cols="12" sm="6" md="4">
-                                                        <v-text-field label="Legal first name*" required></v-text-field>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6" md="4">
-                                                        <v-text-field label="Legal middle name"
-                                                                      hint="example of helper text only on focus"></v-text-field>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6" md="4">
-                                                        <v-text-field
-                                                            label="Legal last name*"
-                                                            hint="example of persistent helper text"
-                                                            persistent-hint
-                                                            required
-                                                        ></v-text-field>
-                                                    </v-col>
-                                                    <v-col cols="12">
-                                                        <v-text-field label="Email*" required></v-text-field>
-                                                    </v-col>
-                                                    <v-col cols="12">
-                                                        <v-text-field label="Password*" type="password"
-                                                                      required></v-text-field>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6">
-                                                        <v-select
-                                                            :items="['0-17', '18-29', '30-54', '54+']"
-                                                            label="Age*"
-                                                            required
-                                                        ></v-select>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6">
-                                                        <v-autocomplete
-                                                            :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                                                            label="Interests"
-                                                            multiple
-                                                        ></v-autocomplete>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-container>
-                                            <small>*indicates required field</small>
-                                        </v-card-text>
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                                            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </v-dialog>
-
-                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
+                    <d-back-button/>
                     <div class="my-2">
-                        <v-btn depressed>Back</v-btn>
-                    </div>
-                    <div class="my-2">
-                        <v-btn depressed color="primary">Submit</v-btn>
+                        <v-btn depressed color="primary" v-on:click="submitForm()">Submit</v-btn>
                     </div>
                 </v-card-actions>
             </v-card>
@@ -135,36 +75,14 @@
 
 <script>
     export default {
-        props: ['config', 'forms'],
-        name: "CreatePO",
+        props: ["forms", "config"],
         data() {
             return {
-                dialog: false,
                 data: {},
                 errors: [],
                 loadingSubmit: false,
                 loading: false,
-                valid: false,
                 modal: false,
-                model: null,
-                item: true,
-                items: [
-                    'Test', 'asd'
-                ],
-                firstname: '',
-                lastname: '',
-                date: new Date().toISOString().substr(0, 10),
-                menu1: false,
-                menu2: false,
-                nameRules: [
-                    v => !!v || 'Name is required',
-                    v => v.length <= 10 || 'Name must be less than 10 characters',
-                ],
-                email: '',
-                emailRules: [
-                    v => !!v || 'E-mail is required',
-                    v => /.+@.+/.test(v) || 'E-mail must be valid',
-                ],
             };
         },
         methods: {
@@ -187,7 +105,7 @@
                     console.error(e.response.data);
                     this.loadingSubmit = false;
                 }
-            },
+            }
         },
     }
 </script>

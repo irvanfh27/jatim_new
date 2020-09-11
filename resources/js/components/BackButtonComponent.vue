@@ -1,5 +1,7 @@
 <template>
-    <button class="btn btn-dark" v-on:click="goBack">Back</button>
+    <div class="my-2">
+        <v-btn depressed v-on:click="goBack">Back</v-btn>
+    </div>
 </template>
 
 <script>
