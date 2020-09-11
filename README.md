@@ -36,7 +36,10 @@ Or if your database is fresh and you haven't done any work yet, then it's safe t
 ```shell
 php artisan migrate:refresh --seed
 ```
-
+next copy paste this command for authenticate API
+```$xslt
+php artisan passport:install
+```
 Note that seeding the database is compulsory as it will create the necessary roles and permissions for the user CRUD provided by the project.
 
 Visit <div style="display: inline">http://yoursite.com/login</div> to sign in using below credentials:
