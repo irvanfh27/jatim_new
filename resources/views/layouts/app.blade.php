@@ -22,7 +22,6 @@
 <!-- Custom styles for this template -->
     <link href="{{ asset('/') }}css/style.css" rel="stylesheet">
     <link href="{{ asset('/') }}css/style-responsive.css" rel="stylesheet">
-
     <!-- =======================================================
       Template Name: Dashio
       Template URL: https://templatemag.com/dashio-bootstrap-admin-template/
@@ -43,9 +42,7 @@
         <!--main content start-->
         <section id="main-content">
             <section class="wrapper">
-                <div>
-                    @yield('content')
-                </div>
+                @yield('content')
             </section>
             <!-- /wrapper -->
         </section>

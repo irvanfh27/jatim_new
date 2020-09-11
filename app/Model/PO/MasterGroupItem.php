@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class MasterGroupItem extends Model
 {
+    public const CREATED_AT = 'entry_date';
+
     protected $table = 'master_groupitem';
     protected $primaryKey = 'idmaster_groupitem';
-
-    protected $fillable = ['uuid', 'name', 'account_id', 'created_by', 'updated_by'];
+    protected $fillable = ['uuid', 'group_name', 'account_id', 'created_by', 'updated_by'];
 
     protected $appends = ['account_no'];
 

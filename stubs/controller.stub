@@ -7,17 +7,10 @@ use Illuminate\Http\Request;
 
 class {{ class }} extends Controller
 {
-    protected $forms;
     protected $rules;
 
     public function __construct()
     {
-
-        $this->forms = [
-            array('type' => 'text', 'label' => '', 'name' => '', 'place_holder' => '', 'mandatory' => true),
-            array('type' => 'textarea', 'label' => '', 'name' => '', 'place_holder' => '', 'mandatory' => false),
-            array('type' => 'select_option', 'label' => '', 'name' => '', 'variable' => '', 'option_value' => 'value', '' => 'label', 'mandatory' => true),
-        ];
 
         $this->rules = [
         ];

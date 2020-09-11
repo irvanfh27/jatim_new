@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Model\Configuration\Stockpile;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,7 +46,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
-        'status', 'all_permissions', 'all_roles'
+        'status', 'all_permissions', 'all_roles', 'stockpile_name'
     ];
 
 
@@ -95,5 +96,20 @@ class User extends Authenticatable
             $res[] = $p->name;
         }
         return $res;
+    }
+
+    public function stockpile()
+    {
+        return $this->belongsTo(Stockpile::class, 'stockpile_id', 'stockpile_id');
+    }
+
+    public function getStockpileNameAttribute()
+    {
+        return $this->stockpile->name;
+    }
+
+    public function getStockpileCodeAttribute()
+    {
+        return $this->stockpile->code;
     }
 }

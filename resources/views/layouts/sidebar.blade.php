@@ -18,6 +18,45 @@
             {{--                </a>--}}
             {{--            </li>--}}
             <li class="sub-menu">
+                <a class="{{ request()->segment(1) == 'po' ? ' active' : '' }}" href="javascript:;">
+                    <i class="fa fa-cogs"></i>
+                    <span>PO</span>
+                </a>
+                <ul class="sub">
+                    {{--                    <li>--}}
+                    {{--                        <a class="{{ request()->segment(2) == 'po' ? ' active' : '' }}"--}}
+                    {{--                           href="{{ route('po.po.index') }}">Create PO</a>--}}
+                    {{--                    </li>--}}
+                    <router-link :to="{ name: 'po'}" v-slot="{ href, navigate, isActive }">
+                        <li :class="[isActive && 'active']">
+                            <a :href="href" @click="navigate">PO</a>
+                        </li>
+                    </router-link>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'approval' ? ' active' : '' }}"
+                           href="{{ route('po.approval.index') }}">Approval PO</a>
+                    </li>
+                    <br>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'uoms' ? ' active' : '' }}"
+                           href="{{ route('po.uoms.index') }}">Uom</a>
+                    </li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'group-items' ? ' active' : '' }}"
+                           href="{{ route('po.group-items.index') }}">Group Items</a>
+                    </li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'items' ? ' active' : '' }}"
+                           href="{{ route('po.items.index') }}">Items</a>
+                    </li>
+                    <li>
+                        <a class="{{ request()->segment(2) == 'signs' ? ' active' : '' }}"
+                           href="{{ route('po.signs.index') }}">Signs</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
                 <a class="{{ request()->segment(1) == 'nota-timbang' ? ' active' : '' }}" href="javascript:;">
                     <i class="fa fa-desktop"></i>
                     <span>Nota Timbang</span>
@@ -125,30 +164,6 @@
                 <ul class="sub">
                     <li><a href="lobby.html">Lobby</a></li>
                     <li><a href="chat_room.html"> Chat Room</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a class="{{ request()->segment(1) == 'po' ? ' active' : '' }}" href="javascript:;">
-                    <i class="fa fa-cogs"></i>
-                    <span>PO</span>
-                </a>
-                <ul class="sub">
-                    <li>
-                        <a class="{{ request()->segment(2) == 'uoms' ? ' active' : '' }}"
-                           href="{{ route('po.uoms.index') }}">Uom</a>
-                    </li>
-                    <li>
-                        <a class="{{ request()->segment(2) == 'group-items' ? ' active' : '' }}"
-                           href="{{ route('po.group-items.index') }}">Group Items</a>
-                    </li>
-                    <li>
-                        <a class="{{ request()->segment(2) == 'items' ? ' active' : '' }}"
-                           href="{{ route('po.items.index') }}">Items</a>
-                    </li>
-                    <li>
-                        <a class="{{ request()->segment(2) == 'signs' ? ' active' : '' }}"
-                           href="{{ route('po.signs.index') }}">Signs</a>
-                    </li>
                 </ul>
             </li>
         </ul>

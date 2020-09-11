@@ -8,9 +8,9 @@
             </h4>
         </header>
         <header class="panel-heading wht-bg">
-            @isset($config['route-add'])
+            @if(isset($config['route-add']) && $config['route-add'] != '')
                 <a href="{{route($config['route-add'])}}" class="btn btn-theme"><i class="fa fa-plus"></i> Add Data</a>
-            @endisset
+            @endif
         </header>
         <div class="panel-body minimal">
             <div class="mail-option">
@@ -19,9 +19,11 @@
                            id="hidden-table-info">
                         <thead>
                         <tr>
-                            <th class="hidden-phone" width="120">
-                                Action
-                            </th>
+                            @if (isset($config['route-edit']) || isset($config['route-delete']))
+                                <th class="hidden-phone" width="120">
+                                    Action
+                                </th>
+                            @endif
                             @foreach ($columns as $column)
                                 <th class="hidden-phone">{{ $column['title'] }}</th>
                             @endforeach
@@ -30,25 +32,45 @@
                         <tbody>
                         @foreach($data as $row)
                             <tr>
-                                <td class="center hidden-phone">
-                                    <form action="{{ route($config['route-delete'], $row->uuid) }}"
-                                          method="post" id="delete-{{$row->id}}">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                    <a class="badge bg-important"
-                                       href="{{ route($config['route-delete'], $row->uuid) }}"
-                                       onclick="event.preventDefault();document.getElementById('delete-{{ $row->id }}').submit();">
-                                        <i class="fa fa-trash-o"></i>
-                                    </a>
-                                    <a href="{{ route($config['route-edit'], $row->uuid) }}"
-                                       class="badge bg-warning"
-                                       title="Edit">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </td>
+                                @if (isset($config['route-edit']) || isset($config['route-delete']))
+                                    <td class="center hidden-phone">
+                                        <form action="{{ route($config['route-delete'], $row->uuid) }}"
+                                              method="post" id="delete-{{$row->id}}">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                        @isset($config['route-custom'])
+                                            <a href="{{ route($config['route-custom']['route-name'], $row[$config['route-custom']['parameter']]) }}"
+                                               class="badge {{$config['route-custom']['class']}}"
+                                               title="{{$config['route-custom']['title']}}"
+                                               target="{{$config['route-custom']['target']}}">
+                                                <i class="fa {{$config['route-custom']['icon']}}"></i>
+                                            </a>
+                                        @endisset
+
+                                        @isset($config['route-edit'])
+                                            <a href="{{ route($config['route-edit'], $row->uuid) }}"
+                                               class="badge bg-warning"
+                                               title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        @endisset
+
+                                        @isset($config['route-delete'])
+                                            <a class="badge bg-important"
+                                               href="{{ route($config['route-delete'], $row->uuid) }}"
+                                               onclick="event.preventDefault();document.getElementById('delete-{{ $row->id }}').submit();">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        @endisset
+                                    </td>
+                                @endif
                                 @foreach ($columns as $column)
-                                    <td class="hidden-phone">{{ $row[$column['field']] }}</td>
+                                    @if(isset($column['type']) && $column['type'] == 'number')
+                                        <td class="hidden-phone">{{  number_format($row[$column['field']], 2, ".", ",") }}</td>
+                                    @else
+                                        <td class="hidden-phone">{{ $row[$column['field']] }}</td>
+                                    @endif
                                 @endforeach
                             </tr>
                         @endforeach

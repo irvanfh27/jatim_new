@@ -49,7 +49,8 @@ class StockpileController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -62,7 +63,7 @@ class StockpileController extends Controller
         } else {
             $query = $query->paginate($perPage);
         }
-        return StockpileResource::collection($query);
+        return $query;
     }
 
     /**

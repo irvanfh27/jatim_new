@@ -33,6 +33,8 @@
                         title: 'Freight Weight Rule',
                         model: 'freight_weight_rule',
                         type: "option",
+                        text:'',
+                        value:'',
                         mandatory: true,
                         data: [
                             {

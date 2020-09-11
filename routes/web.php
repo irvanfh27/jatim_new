@@ -36,11 +36,14 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::name('po.')->prefix('po')->namespace('PO\\')->group(function () {
+        Route::get('approval/print', 'ApprovalPOController@printApprovalPO')->name('approval.print');
         Route::resources([
             'uoms' => 'UomController',
             'group-items' => 'MasterGroupItemController',
             'items' => 'MasterItemController',
             'signs' => 'MasterSignController',
+            'po' => 'POController',
+            'approval' => 'ApprovalPOController',
         ]);
     });
 });

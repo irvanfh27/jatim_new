@@ -10,6 +10,7 @@ require('./component');
 require('./library');
 
 import router from './router';
+import Vuetify from 'vuetify';
 
 axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
@@ -34,9 +35,10 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+Vue.use(Vuetify);
 const app = new Vue({
     el: '#app',
+    vuetify: new Vuetify(),
     router,
     data() {
         return {
@@ -64,3 +66,10 @@ const app = new Vue({
         }
     },
 });
+
+export default new Vuetify({
+    icons: {
+        iconfont: 'mdi', // default - only for display purposes
+    },
+})
+
