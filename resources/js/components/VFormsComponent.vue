@@ -3,7 +3,8 @@
         <v-form>
             <v-card>
                 <v-card-title>
-                    <span class="headline">{{ config.title }}</span>
+                    <span class="headline" v-if="this.$route.params.uuid">{{ 'Edit '+config.title }}</span>
+                    <span class="headline" v-else>{{ 'Add '+config.title }}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -85,25 +86,54 @@
                 modal: false,
             };
         },
+        mounted() {
+            this.getData();
+        },
         methods: {
             async submitForm() {
                 this.loadingSubmit = true;
                 const payload = this.data;
-                try {
-                    const res = await axios.post(this.config.url, payload);
-                    Vue.swal({
-                        icon: "success",
-                        title: "Success!",
-                        text: "Successfully Insert Data!"
-                    }).then(next => {
-                        window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+                if (this.$route.params.uuid) {
+                    this.data._method = "PATCH";
+                    try {
+                        const res = await axios.post(this.config.url + '/' + this.$route.params.uuid, payload);
+                        Vue.swal({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Successfully Edit Data!"
+                        }).then(next => {
+                            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+                        });
+                        console.log(res);
+                    } catch (e) {
+                        this.errors = e.response.data.errors;
+                        console.error(e.response.data);
+                        this.loadingSubmit = false;
+                    }
+                } else {
+                    try {
+                        const res = await axios.post(this.config.url, payload);
+                        Vue.swal({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Successfully Insert Data!"
+                        }).then(next => {
+                            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+                        });
+                        console.log(res);
+                        // console.log(config.url);
+                    } catch (e) {
+                        this.errors = e.response.data.errors;
+                        console.error(e.response.data);
+                        this.loadingSubmit = false;
+                    }
+                }
+            },
+            getData() {
+                if (this.$route.params.uuid) {
+                    axios.get(this.config.url + '/' + this.$route.params.uuid + '/edit').then(res => {
+                        this.data = res.data;
                     });
-                    console.log(res);
-                    // console.log(config.url);
-                } catch (e) {
-                    this.errors = e.response.data.errors;
-                    console.error(e.response.data);
-                    this.loadingSubmit = false;
                 }
             }
         },

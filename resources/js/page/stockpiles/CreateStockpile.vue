@@ -4,11 +4,10 @@
 
 <script>
     export default {
-        name: "CreateStockpile",
         data() {
             return {
                 config: {
-                    title: "Add Stockpile",
+                    title: "Stockpile",
                     url: this.$parent.MakeUrl('configuration/stockpiles'),
                 },
                 forms: [

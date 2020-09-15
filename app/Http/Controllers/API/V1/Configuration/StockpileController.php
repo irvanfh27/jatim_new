@@ -54,16 +54,8 @@ class StockpileController extends Controller
      */
     public function index(Request $request)
     {
-        $searchValue = $request->input('query');
-        $perPage = $request->perPage;
-        $query = Stockpile::searchQuery($searchValue);
 
-        if ($perPage) {
-            $query = $query->take(20)->paginate(20);
-        } else {
-            $query = $query->paginate($perPage);
-        }
-        return $query;
+        return Stockpile::all();
     }
 
     /**
@@ -124,22 +116,7 @@ class StockpileController extends Controller
      */
     public function edit(Stockpile $stockpile)
     {
-        $config = [
-            'title' => 'Edit Stockpile',
-            'size' => 8,
-            'route' => route('configuration.stockpiles.update', $stockpile),
-            'method' => 'PATCH'
-        ];
-
-        $data = $stockpile;
-
-        return view('layouts.create-edit', [
-            'config' => $config,
-            'forms' => $this->forms,
-            'weightRule' => $this->weightRule,
-            'status' => $this->status,
-            'data' => $data
-        ]);
+        return $stockpile;
     }
 
     /**
@@ -151,9 +128,8 @@ class StockpileController extends Controller
      */
     public function update(Request $request, Stockpile $stockpile)
     {
-        $request->validate($this->rules);
         $input = $request->all();
-        $input['updated_by'] = auth()->user()->id;
+//        $input['updated_by'] = auth('api')->user()->id;
         $stockpile->update($input);
         return redirect()->route('configuration.stockpiles.index');
     }

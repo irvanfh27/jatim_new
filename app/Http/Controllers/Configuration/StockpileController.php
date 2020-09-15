@@ -158,9 +158,11 @@ class StockpileController extends Controller
     public function update(Request $request, Stockpile $stockpile)
     {
         $request->validate($this->rules);
+
         $input = $request->all();
         $input['updated_by'] = auth()->user()->id;
         $stockpile->update($input);
+
         return redirect()->route('configuration.stockpiles.index');
     }
 

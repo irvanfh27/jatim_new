@@ -20,7 +20,6 @@
                             <v-col cols="12" md="4">
                                 <v-text-field
                                     v-model="form.noPenawaran"
-                                    :rules="nameRules"
                                     label="No Penawaran"
                                     required
                                 ></v-text-field>
@@ -36,7 +35,7 @@
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
-                                            v-model="date"
+                                            v-model="form.tanggal"
                                             label="Tanggal PO"
                                             prepend-icon="event"
                                             readonly
@@ -44,7 +43,7 @@
                                             v-on="on"
                                         ></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="date" scrollable>
+                                    <v-date-picker v-model="form.tanggal" scrollable>
                                         <v-spacer></v-spacer>
                                         <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
                                         <v-btn text color="primary" @click="$refs.dialog.save(date)">OK
@@ -72,6 +71,7 @@
                                     label="Currency"
                                 ></v-autocomplete>
                             </v-col>
+
                             <v-col cols="12" sm="6">
                                 <v-autocomplete
                                     :items="data.vendors"
@@ -82,6 +82,7 @@
                                     label="Vendor"
                                 ></v-autocomplete>
                             </v-col>
+
                             <v-col cols="12" sm="6">
                                 <v-autocomplete
                                     :items="data.vendorBank"
@@ -92,6 +93,7 @@
                                     v-if="form.vendorId">
                                 </v-autocomplete>
                             </v-col>
+
                             <!--                            Modal Add Data-->
                             <v-col cols="12" sm="6" v-if="form.vendorId">
                                 <v-dialog v-model="dialog" persistent max-width="600px">
@@ -186,6 +188,13 @@
                                                             readonly
                                                         ></v-text-field>
                                                     </v-col>
+                                                    <v-col cols="6">
+                                                        <v-checkbox
+                                                            v-model="formModal.ppnStatus"
+                                                            value="1"
+                                                            label="YES">
+                                                        </v-checkbox>
+                                                    </v-col>
                                                     <v-col cols="12" sm="6">
                                                         <v-autocomplete
                                                             :items="data.pph"
@@ -196,6 +205,7 @@
                                                         >
                                                         </v-autocomplete>
                                                     </v-col>
+
                                                 </v-row>
                                             </v-container>
                                             <small>*indicates required field</small>
@@ -203,13 +213,14 @@
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
                                             <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                                            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+                                            <v-btn color="blue darken-1" text v-on:click="insertPODetail">Save</v-btn>
                                         </v-card-actions>
                                     </v-card>
                                 </v-dialog>
                             </v-col>
+
                             <v-col cols="12">
-                                <v-simple-table fixed-header height="300px" v-if="form.poDetails.length">
+                                <v-simple-table fixed-header height="300px" v-if="data.poDetails.length > 0">
                                     <template v-slot:default>
                                         <thead>
                                         <tr>
@@ -223,13 +234,27 @@
                                             <th class="text-left">PPH</th>
                                             <th class="text-left">Total</th>
                                             <th class="text-left">Action</th>
-
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="item in form.poDetails" :key="item.name">
-                                            <td>{{ item.shipmentCode }}</td>
+                                        <tr v-for="item in data.poDetails" :key="item.idpo_detail">
+                                            <td>{{ item.shipment_no }}</td>
                                             <td>{{ item.stockpile }}</td>
+                                            <td>{{ item.item_name}}</td>
+                                            <td>{{ item.qty}}</td>
+                                            <td>{{ item.harga}}</td>
+                                            <td>{{ item.amount}}</td>
+                                            <td>{{ item.ppn}}</td>
+                                            <td>{{ item.pph}}</td>
+                                            <td>{{ item.grandtotal}}</td>
+                                            <td>
+                                                <v-icon
+                                                    small
+                                                    @click="deletePODetail(item)"
+                                                >
+                                                    mdi-delete
+                                                </v-icon>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </template>
@@ -254,11 +279,9 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
+                    <d-back-button/>
                     <div class="my-2">
-                        <v-btn depressed>Back</v-btn>
-                    </div>
-                    <div class="my-2">
-                        <v-btn depressed color="primary">Submit</v-btn>
+                        <v-btn depressed color="primary" @click="submitForm">Submit</v-btn>
                     </div>
                 </v-card-actions>
             </v-card>
@@ -290,8 +313,9 @@
                     shipments: [],
                     groupItems: [],
                     items: [],
+                    poDetails: [],
                     pph: [],
-                    ppn: {}
+                    ppn: {},
                 },
                 errors: [],
                 loadingSubmit: false,
@@ -306,22 +330,20 @@
                     itemId: 0,
                     qty: 0,
                     unitPrice: 0,
-                    amount: 0,
                     ppn: 0,
-                    pph: '',
-                    checkPPN: null
+                    pph: 0,
+                    ppnStatus: 0
                 },
                 form: {
                     vendorId: 0,
                     vendorBankId: 0,
                     noPO: '',
+                    tanggal:'',
                     noPenawaran: '',
                     checkBy: 0,
                     remarks: '',
                     termsOfCondition: '',
-                    poDetails: []
                 },
-
                 date: '',
                 nameRules: [
                     v => !!v || 'Name is required',
@@ -332,6 +354,7 @@
                     v => !!v || 'E-mail is required',
                     v => /.+@.+/.test(v) || 'E-mail must be valid',
                 ],
+
             };
         },
         mounted() {
@@ -341,14 +364,17 @@
             async submitForm() {
                 this.loadingSubmit = true;
                 const payload = {
-                    items: this.orders_detail.map((item, idx) => ({
-                        skuid: item.skuid,
-                        qty: item.qty,
-                        notes: item.notes
-                    })),
+                    general_vendor_id: this.form.vendorId,
+                    no_penawaran: this.form.noPenawaran,
+                    tanggal: this.form.tanggal,
+                    memo: this.form.remarks,
+                    currency_id: this.form.currency,
+                    toc: this.form.termsOfCondition,
+                    sign_id: this.form.checkBy,
                 };
+
                 try {
-                    const res = await axios.post(this.config.url, payload);
+                    const res = await axios.post(this.$parent.MakeUrl('po/po'), payload);
                     Vue.swal({
                         icon: "success",
                         title: "Success!",
@@ -359,6 +385,7 @@
                     console.log(res);
                     // console.log(config.url);
                 } catch (e) {
+                    console.log('error');
                     this.errors = e.response.data.errors;
                     console.error(e.response.data);
                     this.loadingSubmit = false;
@@ -376,19 +403,22 @@
 
                 ]).then(
                     axios.spread((signs, stockpiles, vendor, currency, shipments, groupItems, po) => {
+                        this.data.signs = signs.data;
                         this.data.stockpiles = stockpiles.data.data;
                         this.data.vendors = vendor.data;
                         this.data.currency = currency.data;
                         this.data.shipments = shipments.data;
                         this.data.groupItems = groupItems.data;
+
                         this.form.noPO = po.data;
+
+                        console.log(po);
                         this.loading = false;
                     })
                 ).catch(err => {
 
                 });
             },
-
             getVendorBank() {
                 this.loading = true;
                 axios.all([
@@ -411,6 +441,7 @@
                     this.data.pph = pph.concat(vendorPPH.data);
                     this.data.ppn = ppn.data;
                     this.loading = false;
+                    this.getPODetail();
                     console.log(ppn.data);
                 })).catch(err => {
 
@@ -422,16 +453,46 @@
                         this.data.items = res.data;
                     });
             },
-            pushPoDetails() {
-                return this.data.poDetails.push({
-                    total_amount: 0,
-                    qty: 0,
-                    skuid: this.item.skuid,
-                    uom: this.item.uom,
-                    item_name: this.item.item_name,
-                    amount: this.item.amount,
-                    notes: null
-                });
+            async insertPODetail() {
+                const payload = {
+                    no_po: this.form.noPO,
+                    qty: this.formModal.qty,
+                    harga: this.formModal.harga,
+                    amount: this.totalAmount,
+                    ppn: this.formModal.ppn,
+                    pph: this.formModal.pph,
+                    shipment_id: this.formModal.shipmentId,
+                    item_id: this.formModal.itemId,
+                    stockpile_id: this.formModal.stockpileId,
+                    ppnstatus: this.formModal.ppnStatus,
+                    vendor_id: this.form.vendorId
+                };
+                try {
+                    const res = await axios.post(this.$parent.MakeUrl('po/insertPODetail'), payload);
+                    Vue.swal({
+                        icon: "success",
+                        title: "Success!",
+                        text: "Successfully Insert Data!"
+                    }).then(next => {
+                        this.getPODetail();
+                        this.dialog = false;
+                    });
+                    console.log(res);
+                    // console.log(config.url);
+                } catch (e) {
+                    this.errors = e.response.data.errors;
+                    console.error(e.response.data);
+                }
+            },
+            getPODetail() {
+                axios.get(this.$parent.MakeUrl("po/listPODetail?noPO=" + this.form.noPO))
+                    .then(res => {
+                        this.data.poDetails = res.data;
+                        console.log(res)
+                    });
+            },
+            deletePODetail() {
+                console.log('saved')
             }
         },
         computed: {

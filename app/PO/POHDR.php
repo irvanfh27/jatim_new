@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class POHDR extends Model
 {
+    const CREATED_AT = 'entry_date';
     protected $table = 'po_hdr';
     protected $primaryKey = 'idpo_hdr';
     protected $appends = ['stockpile_name', 'general_vendor_name', 'status_po'];
-    public const CREATED_AT = 'entry_date';
+    protected $fillable = [
+        'no_po','general_vendor_id','no_penawaran','tanggal','memo','currency_id','exchangerate',
+        'stockpile_id','sign_id','toc','totalppn','totalpph','totalall','entry_by'
+    ];
 
 
     public function stockpile()
@@ -27,7 +31,7 @@ class POHDR extends Model
 
     public function sign()
     {
-        return $this->belongsTo(MasterSign::class,'sign_id','idmaster_sign');
+        return $this->belongsTo(MasterSign::class, 'sign_id', 'idmaster_sign');
     }
 
     public function getStockpileNameAttribute()
