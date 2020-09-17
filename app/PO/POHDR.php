@@ -14,8 +14,8 @@ class POHDR extends Model
     protected $primaryKey = 'idpo_hdr';
     protected $appends = ['stockpile_name', 'general_vendor_name', 'status_po'];
     protected $fillable = [
-        'no_po','general_vendor_id','no_penawaran','tanggal','memo','currency_id','exchangerate',
-        'stockpile_id','sign_id','toc','totalppn','totalpph','totalall','entry_by'
+        'no_po', 'general_vendor_id', 'no_penawaran', 'tanggal', 'memo', 'currency_id', 'exchangerate',
+        'stockpile_id', 'sign_id', 'toc', 'totalppn', 'totalpph', 'totalall', 'entry_by'
     ];
 
 
@@ -63,4 +63,8 @@ class POHDR extends Model
         return $status;
     }
 
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }

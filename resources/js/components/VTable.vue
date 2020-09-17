@@ -18,12 +18,8 @@
                                         inset
                                         vertical
                                     ></v-divider>
-                                    <v-btn
-                                        color="primary"
-                                        dark
-                                        class="mb-1"
-                                        @click="addData"
-                                    >Add Data
+                                    <v-btn color="primary" dark class="mb-1" @click="addData">
+                                        Add Data
                                     </v-btn>
                                     <v-spacer></v-spacer>
                                 </v-toolbar>
@@ -44,7 +40,12 @@
                                 </v-icon>
                             </template>
                             <template v-slot:no-data>
-                                <v-btn color="primary" @click="getData">Reset</v-btn>
+                                <v-progress-circular
+                                    :size="200"
+                                    :width="20"
+                                    color="green"
+                                    indeterminate
+                                ></v-progress-circular>
                             </template>
                             <template v-slot:body.prepend>
                                 <tr>
@@ -79,10 +80,11 @@
                 this.$router.push({name: this.config.routeAdd});
             },
             getData() {
+                console.log("click")
+                this.loading = false;
                 axios.get(BaseUrl(this.config.urlAPI)).then(res => {
                     this.data = res.data;
                     this.loading = true;
-                    console.log(res);
                 }).catch(e => {
                     console.log(e.response);
                 });
@@ -90,8 +92,27 @@
             editItem(item) {
                 this.$router.push({name: this.config.routeEdit, params: {uuid: item.uuid}});
             },
-            deleteItem(uuid) {
-
+            deleteItem(item) {
+                Vue.swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.post(BaseUrl(this.config.urlAPI) + '/' + item.uuid, {_method: 'DELETE'});
+                        Vue.swal(
+                            'Deleted!',
+                            'Your data has been deleted.',
+                            'success'
+                        ).then((next) => {
+                            this.getData();
+                        });
+                    }
+                });
             }
         }
     }

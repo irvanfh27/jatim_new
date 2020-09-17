@@ -2,11 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router';
 import Dashboard from "./page/Dashboard";
 import IndexStockpiles from "./page/stockpiles/IndexStockpiles";
-import CreateStockpile from "./page/stockpiles/CreateStockpile";
 import IndexPO from "./page/po/create-po/IndexPO";
-import CreatePO from "./page/po/create-po/CreatePO";
 import FreightGroup from "./page/configuration/freightgroup/FreightGroup";
 import CreateFreightGroup from "./page/configuration/freightgroup/CreateFreightGroup";
+import FormStockpile from "./page/stockpiles/FormStockpile";
+import FormPO from "./page/po/create-po/FormPO";
 
 Vue.use(VueRouter);
 const router = new VueRouter({
@@ -25,12 +25,12 @@ const router = new VueRouter({
         {
             path: '/dashboard/stockpiles/create',
             name: "stockpiles.create",
-            component: CreateStockpile
+            component: FormStockpile
         },
         {
             path: '/dashboard/stockpiles/:uuid/edit',
             name: "stockpiles.edit",
-            component: CreateStockpile
+            component: FormStockpile
         },
         {
             path: '/dashboard/po',
@@ -40,12 +40,12 @@ const router = new VueRouter({
         {
             path: '/dashboard/po/create',
             name: "po.create",
-            component: CreatePO
+            component: FormPO
         },
         {
             path: '/dashboard/po/:uuid/edit',
             name: "po.edit",
-            component: CreatePO
+            component: FormPO
         },
         {
             path: '/dashboard/configuration/freightgroup',

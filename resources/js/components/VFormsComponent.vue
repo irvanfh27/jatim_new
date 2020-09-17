@@ -93,46 +93,32 @@
             async submitForm() {
                 this.loadingSubmit = true;
                 const payload = this.data;
+
                 if (this.$route.params.uuid) {
                     this.data._method = "PATCH";
-                    try {
-                        const res = await axios.post(this.config.url + '/' + this.$route.params.uuid, payload);
-                        Vue.swal({
-                            icon: "success",
-                            title: "Success!",
-                            text: "Successfully Edit Data!"
-                        }).then(next => {
-                            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
-                        });
-                        console.log(res);
-                    } catch (e) {
-                        this.errors = e.response.data.errors;
-                        console.error(e.response.data);
-                        this.loadingSubmit = false;
-                    }
-                } else {
-                    try {
-                        const res = await axios.post(this.config.url, payload);
-                        Vue.swal({
-                            icon: "success",
-                            title: "Success!",
-                            text: "Successfully Insert Data!"
-                        }).then(next => {
-                            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
-                        });
-                        console.log(res);
-                        // console.log(config.url);
-                    } catch (e) {
-                        this.errors = e.response.data.errors;
-                        console.error(e.response.data);
-                        this.loadingSubmit = false;
-                    }
+                }
+
+                try {
+                    const res = await axios.post(this.config.url + '/' + this.$route.params.uuid, payload);
+                    Vue.swal({
+                        icon: "success",
+                        title: "Success!",
+                        text: "Successfully Edit Data!"
+                    }).then(next => {
+                        window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+                    });
+                    console.log(res);
+                } catch (e) {
+                    this.errors = e.response.data.errors;
+                    console.error(e.response.data);
+                    this.loadingSubmit = false;
                 }
             },
             getData() {
                 if (this.$route.params.uuid) {
-                    axios.get(this.config.url + '/' + this.$route.params.uuid + '/edit').then(res => {
-                        this.data = res.data;
+                    axios.get(this.config.url + '/' + this.$route.params.uuid).then(res => {
+                        this.form = res.data;
+                        console.log(res);
                     });
                 }
             }

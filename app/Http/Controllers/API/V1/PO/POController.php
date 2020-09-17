@@ -9,6 +9,7 @@ use App\PO\POHDR;
 use Illuminate\Http\Request;
 use App\PO\POHDR as PO;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 class POController extends Controller
@@ -71,6 +72,7 @@ class POController extends Controller
 
         $input = $request->all();
         $input['no_po'] = $noPO;
+        $input['uuid'] = Str::uuid();
         $input['entry_by'] = auth('api')->user()->id;
         $input['stockpile_id'] = auth('api')->user()->stockpile_id;
         $input['totalppn'] = $totalPPN;
@@ -84,12 +86,12 @@ class POController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param PO $po
+     * @return void
      */
-    public function show($id)
+    public function show(PO $po)
     {
-        //
+        return $po;
     }
 
     /**
@@ -176,6 +178,7 @@ class POController extends Controller
         $input['entry_date'] = date('Y-m-d h:i:s');
         $input['ppn_id'] = $pph_id;
         $input['pph'] = $pph;
+        $input['uuid'] = Str::uuid();
         $input['pphStatus'] = $pphStatus;
 
         PODetail::create($input);

@@ -10,7 +10,7 @@
                         <v-row>
                             <v-col cols="12" md="4">
                                 <v-text-field
-                                    v-model="form.noPO"
+                                    v-model="form.no_po"
                                     label="Generate PO NO."
                                     required
                                     readonly
@@ -19,7 +19,7 @@
 
                             <v-col cols="12" md="4">
                                 <v-text-field
-                                    v-model="form.noPenawaran"
+                                    v-model="form.no_penawaran"
                                     label="No Penawaran"
                                     required
                                 ></v-text-field>
@@ -55,7 +55,7 @@
                             <v-col cols="12" sm="6">
                                 <v-autocomplete
                                     :items="data.signs"
-                                    v-model="form.checkBy"
+                                    v-model="form.sign_id"
                                     item-text="name"
                                     item-value="idmaster_sign"
                                     label="Check By"
@@ -65,7 +65,7 @@
                             <v-col cols="12" sm="6">
                                 <v-autocomplete
                                     :items="data.currency"
-                                    v-model="form.currency"
+                                    v-model="form.currency_id"
                                     item-text="currency_name"
                                     item-value="currency_id"
                                     label="Currency"
@@ -75,7 +75,7 @@
                             <v-col cols="12" sm="6">
                                 <v-autocomplete
                                     :items="data.vendors"
-                                    v-model="form.vendorId"
+                                    v-model="form.general_vendor_id"
                                     item-text="general_vendor_name"
                                     item-value="general_vendor_id"
                                     @change="getVendorBank"
@@ -90,12 +90,12 @@
                                     item-text="bank_name"
                                     item-value="gv_bank_id"
                                     label="Vendor Bank"
-                                    v-if="form.vendorId">
+                                    v-if="form.general_vendor_id">
                                 </v-autocomplete>
                             </v-col>
 
                             <!--                            Modal Add Data-->
-                            <v-col cols="12" sm="6" v-if="form.vendorId">
+                            <v-col cols="12" sm="6" v-if="form.general_vendor_id">
                                 <v-dialog v-model="dialog" persistent max-width="600px">
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
@@ -270,7 +270,7 @@
                             <v-col cols="12">
                                 <v-textarea
                                     label="Terms of Condition"
-                                    v-model="form.termsOfCondition"
+                                    v-model="form.toc"
                                 >
                                 </v-textarea>
                             </v-col>
@@ -335,14 +335,15 @@
                     ppnStatus: 0
                 },
                 form: {
-                    vendorId: 0,
+                    general_vendor_id: 0,
                     vendorBankId: 0,
-                    noPO: '',
-                    tanggal:'',
-                    noPenawaran: '',
-                    checkBy: 0,
+                    no_po: '',
+                    tanggal: '',
+                    no_penawaran: '',
+                    sign_id: 0,
                     remarks: '',
-                    termsOfCondition: '',
+                    currency_id: 0,
+                    toc: '',
                 },
                 date: '',
                 nameRules: [
@@ -359,19 +360,28 @@
         },
         mounted() {
             this.getData();
+            this.editPO();
         },
         methods: {
             async submitForm() {
                 this.loadingSubmit = true;
+
                 const payload = {
-                    general_vendor_id: this.form.vendorId,
-                    no_penawaran: this.form.noPenawaran,
+                    general_vendor_id: this.form.general_vendor_id,
+                    no_penawaran: this.form.no_penawaran,
                     tanggal: this.form.tanggal,
                     memo: this.form.remarks,
-                    currency_id: this.form.currency,
-                    toc: this.form.termsOfCondition,
-                    sign_id: this.form.checkBy,
+                    currency_id: this.form.currency_id,
+                    toc: this.form.toc,
+                    sign_id: this.form.sign_id,
                 };
+
+                if (this.$route.params.uuid) {
+                    const method = {
+                        _method: 'PATCH'
+                    }
+                    Object.assign(payload, method);
+                }
 
                 try {
                     const res = await axios.post(this.$parent.MakeUrl('po/po'), payload);
@@ -404,13 +414,13 @@
                 ]).then(
                     axios.spread((signs, stockpiles, vendor, currency, shipments, groupItems, po) => {
                         this.data.signs = signs.data;
-                        this.data.stockpiles = stockpiles.data.data;
+                        this.data.stockpiles = stockpiles.data;
                         this.data.vendors = vendor.data;
                         this.data.currency = currency.data;
                         this.data.shipments = shipments.data;
                         this.data.groupItems = groupItems.data;
 
-                        this.form.noPO = po.data;
+                        this.form.no_po = po.data;
 
                         console.log(po);
                         this.loading = false;
@@ -422,9 +432,9 @@
             getVendorBank() {
                 this.loading = true;
                 axios.all([
-                    axios.get(this.$parent.MakeUrl("configuration/general-vendor-bank?type=option&generalVendorId=" + this.form.vendorId)),
-                    axios.get(this.$parent.MakeUrl("general-vendor-pph?type=option&vendorId=" + this.form.vendorId)),
-                    axios.get(this.$parent.MakeUrl("vendor-ppn?vendorId=" + this.form.vendorId)),
+                    axios.get(this.$parent.MakeUrl("configuration/general-vendor-bank?type=option&generalVendorId=" + this.form.general_vendor_id)),
+                    axios.get(this.$parent.MakeUrl("general-vendor-pph?type=option&generalVendorId=" + this.form.general_vendor_id)),
+                    axios.get(this.$parent.MakeUrl("vendor-ppn?generalVendorId=" + this.form.general_vendor_id)),
 
                 ]).then(axios.spread((vendorBank, vendorPPH, ppn) => {
                     const pph = [
@@ -455,7 +465,7 @@
             },
             async insertPODetail() {
                 const payload = {
-                    no_po: this.form.noPO,
+                    no_po: this.form.no_po,
                     qty: this.formModal.qty,
                     harga: this.formModal.harga,
                     amount: this.totalAmount,
@@ -465,7 +475,7 @@
                     item_id: this.formModal.itemId,
                     stockpile_id: this.formModal.stockpileId,
                     ppnstatus: this.formModal.ppnStatus,
-                    vendor_id: this.form.vendorId
+                    vendor_id: this.form.general_vendor_id
                 };
                 try {
                     const res = await axios.post(this.$parent.MakeUrl('po/insertPODetail'), payload);
@@ -485,7 +495,7 @@
                 }
             },
             getPODetail() {
-                axios.get(this.$parent.MakeUrl("po/listPODetail?noPO=" + this.form.noPO))
+                axios.get(this.$parent.MakeUrl("po/listPODetail?noPO=" + this.form.no_po))
                     .then(res => {
                         this.data.poDetails = res.data;
                         console.log(res)
@@ -493,6 +503,15 @@
             },
             deletePODetail() {
                 console.log('saved')
+            },
+            editPO() {
+                if (this.$route.params.uuid) {
+                    axios.get(this.$parent.MakeUrl("po/po/" + this.$route.params.uuid))
+                        .then(res => {
+                            this.form = res.data;
+                            console.log(res)
+                        });
+                }
             }
         },
         computed: {
