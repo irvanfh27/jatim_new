@@ -8,6 +8,7 @@ use App\Model\Configuration\GeneralVendor;
 use App\Model\PO\PODetail;
 use App\PO\POHDR;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PODetailController extends Controller
@@ -48,24 +49,34 @@ class PODetailController extends Controller
      */
     public function store(Request $request)
     {
-        if (!$request->ppnStatus) {
-            $pph = 0;
-            $pphStatus = 0;
-            $pph_id = 0;
+        if ($request->ppnstatus == 1) {
+            $generalVendor = GeneralVendor::where('general_vendor_id', $request->vendor_id)->first();
+            $ppn_id = $generalVendor->ppn_tax_id;
+            $ppnstatus = 1;
+            $ppn = $request->ppn;
         } else {
-            $generalVendor = GeneralVendor::where('general_vendor_id', $request->vendorId)->first();
-            $tax = DB::table('tax')->where('tax_id', $request->pph)->first();
+            $ppn = 0;
+            $ppn_id = 0;
+            $ppnstatus = 0;
+        }
+
+        if ($request->pph_id != 0 || $request->pph_id != '') {
+            $tax = DB::table('tax')->where('tax_id', $request->pph_id)->first();
             $pph = $request->amount / 100 * $tax->tax_value;
-            $pphStatus = 1;
-            $pph_id = $generalVendor->ppn_tax_id;
+            $pphstatus = 1;
+        } else {
+            $pph = 0;
+            $pphstatus = 0;
         }
         $input = $request->all();
         $input['entry_by'] = auth('api')->user()->id;
         $input['entry_date'] = date('Y-m-d h:i:s');
-        $input['ppn_id'] = $pph_id;
+        $input['ppn_id'] = $ppn_id;
         $input['pph'] = $pph;
+        $input['ppn'] = $ppn;
         $input['uuid'] = Str::uuid();
-        $input['pphStatus'] = $pphStatus;
+        $input['pphstatus'] = $pphstatus;
+        $input['ppnstatus'] = $ppnstatus;
 
         PODetail::create($input);
     }

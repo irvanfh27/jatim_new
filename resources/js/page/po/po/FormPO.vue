@@ -199,16 +199,18 @@
                                                         ></v-text-field>
                                                     </v-col>
                                                     <v-col cols="6">
-                                                        <v-checkbox v-if="totalPPN"
-                                                                    v-model="formModal.ppnStatus"
-                                                                    value="1"
-                                                                    label="IF PPN"
+                                                        <v-checkbox
+                                                            v-if="data.ppn.tax_value"
+                                                            v-model="formModal.ppnStatus"
+                                                            input-value="1"
+                                                            label="IF PPN"
                                                         >
                                                         </v-checkbox>
-                                                        <v-checkbox v-else
-                                                                    v-model="formModal.ppnStatus"
-                                                                    value="1"
-                                                                    label="IF PPN"
+                                                        <v-checkbox
+                                                            v-else
+                                                            v-model="formModal.ppnStatus"
+                                                            value="1"
+                                                            label="IF PPN"
                                                         >
                                                         </v-checkbox>
                                                     </v-col>
@@ -351,7 +353,7 @@
                     unitPrice: 0,
                     ppn: 0,
                     pph: 0,
-                    ppnStatus: 0,
+                    ppnStatus: '',
                     uomId: 0,
                 },
                 form: {
@@ -476,6 +478,9 @@
                     this.data.vendorBank = vendorBank.data;
                     this.data.pph = pph.concat(vendorPPH.data);
                     this.data.ppn = ppn.data;
+                    if (ppn.data.tax_value) {
+                        this.formModal.ppnStatus = 1;
+                    }
                     this.loading = false;
                     this.getPODetail();
                     console.log(ppn.data);
@@ -495,8 +500,8 @@
                     qty: this.formModal.qty,
                     harga: this.formModal.harga,
                     amount: this.totalAmount,
-                    ppn: this.formModal.ppn,
-                    pph: this.formModal.pph,
+                    ppn: this.totalPPN,
+                    pph_id: this.formModal.pph,
                     shipment_id: this.formModal.shipmentId,
                     item_id: this.formModal.itemId,
                     stockpile_id: this.formModal.stockpileId,
@@ -512,7 +517,18 @@
                         text: "Successfully Insert Data!"
                     }).then(next => {
                         this.getPODetail();
-                        this.formModal = '';
+                        this.formModal = {
+                            stockpileId: 0,
+                            shipmentId: 0,
+                            groupItemId: 0,
+                            itemId: 0,
+                            qty: 0,
+                            unitPrice: 0,
+                            ppn: 0,
+                            pph: 0,
+                            ppnStatus: 0,
+                            uomId: 0,
+                        };
                         this.dialog = false;
                     });
                     console.log(res);
