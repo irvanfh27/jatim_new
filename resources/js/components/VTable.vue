@@ -18,7 +18,7 @@
                                         inset
                                         vertical
                                     ></v-divider>
-                                    <v-btn color="primary" dark class="mb-1" @click="addData">
+                                    <v-btn color="primary" dark class="mb-1" @click="addData" v-if="config.routeAdd">
                                         Add Data
                                     </v-btn>
                                     <v-spacer></v-spacer>
@@ -29,15 +29,32 @@
                                     small
                                     class="mr-2"
                                     @click="editItem(item)"
+                                    v-if="config.routeEdit && item.status == 0  || item.status == 3"
                                 >
                                     mdi-pencil
                                 </v-icon>
                                 <v-icon
                                     small
+                                    @click="detailItem(item)"
+                                    v-if="config.routeDetail"
+                                >
+                                    mdi-book
+                                </v-icon>
+                                <v-icon
+                                    small
                                     @click="deleteItem(item)"
+                                    v-if="config.routeDelete"
                                 >
                                     mdi-delete
                                 </v-icon>
+                                <v-icon
+                                    small
+                                    @click="printItem(item)"
+                                    v-if="config.routePrint"
+                                >
+                                    mdi-delete
+                                </v-icon>
+
                             </template>
                             <template v-slot:no-data>
                                 <v-progress-circular
@@ -49,6 +66,7 @@
                             </template>
                             <template v-slot:body.prepend>
                                 <tr>
+                                    <td></td>
                                     <td v-for="form in headers" v-if="form.filter">
                                         <v-text-field v-model="search[form.value]" type="text"
                                                       :label="form.text"></v-text-field>
@@ -70,7 +88,6 @@
         props: ['headers', 'config', 'search'],
         data: () => ({
             data: [],
-
         }),
         created() {
             this.getData();
@@ -91,6 +108,12 @@
             },
             editItem(item) {
                 this.$router.push({name: this.config.routeEdit, params: {uuid: item.uuid}});
+            },
+            printItem(item) {
+                this.$router.push({name: this.config.routePrint, params: {uuid: item.uuid}});
+            },
+            detailItem(item) {
+                this.$router.push({name: this.config.routeDetail, params: {uuid: item.uuid}});
             },
             deleteItem(item) {
                 Vue.swal({

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\V1\PO;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\POResource;
+use App\Http\Resources\POWithDetailResource;
 use App\Model\Configuration\GeneralVendor;
 use App\Model\PO\PODetail;
 use App\PO\POHDR;
@@ -35,9 +37,14 @@ class POController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return PO::all();
+        $po = new PO();
+        if ($request->status) {
+            $po = $po->where('status', $request->status);
+        }
+        $po = $po->orderBy('entry_date','desc')->get();
+        return POResource::collection($po);
     }
 
     /**
@@ -54,27 +61,26 @@ class POController extends Controller
                 'no_po' => $noPO
             ]);
         }
+
 //        $request->validate($this->rules);
         $totalPPN = 0;
         $totalPPH = 0;
-        $totalAll = 0;
+        $totalDPP = 0;
 
-        $poDetails = DB::select("SELECT pd.qty,pd.harga,pd.amount,(CASE WHEN pd.pphstatus = 1 THEN pd.pph ELSE 0 END) AS pph,(CASE WHEN pd.ppnstatus = 1 THEN pd.ppn ELSE 0 END) AS ppn,
-    (pd.amount+(CASE WHEN pd.ppnstatus = 1 THEN pd.ppn ELSE 0 END)-(CASE WHEN pd.pphstatus = 1 THEN pd.pph ELSE 0 END)) AS grandtotal,idpo_detail
-			FROM po_detail pd
-			where no_po = '{$request->no_po}' ORDER BY idpo_detail ASC");
+        $poDetails = PODetail::where('no_po', $noPO)->get();
 
         foreach ($poDetails as $po) {
+            $totalDPP += $po->amount;
             $totalPPN += $po->ppn;
             $totalPPH += $po->pph;
-            $totalAll += $po->grandtotal;
         }
-
+        $totalAll = $totalDPP + ($totalPPN - $totalPPH);
         $input = $request->all();
         $input['no_po'] = $noPO;
         $input['uuid'] = Str::uuid();
         $input['entry_by'] = auth('api')->user()->id;
         $input['stockpile_id'] = auth('api')->user()->stockpile_id;
+        $input['grandtotal'] = $totalDPP;
         $input['totalppn'] = $totalPPN;
         $input['totalpph'] = $totalPPH;
         $input['totalall'] = $totalAll;
@@ -89,9 +95,9 @@ class POController extends Controller
      * @param PO $po
      * @return void
      */
-    public function show(PO $po)
+    public function show($uuid)
     {
-        return $po;
+        return new POWithDetailResource(PO::where('uuid', $uuid)->first());
     }
 
     /**
@@ -153,6 +159,7 @@ class POController extends Controller
             LEFT JOIN stockpiles s ON s.`stockpile_id` = pd.`stockpile_id`
             LEFT JOIN shipment sh ON sh.`shipment_id` = pd.`shipment_id`
 			where no_po = '{$request->noPO}' ORDER BY idpo_detail ASC");
+
         return $poDetail;
 //        return PODetail::where('no_po', $request->noPO)
 //            ->where('entry_by', auth('api')->user()->id)
@@ -184,4 +191,28 @@ class POController extends Controller
         PODetail::create($input);
     }
 
+    public function updateStatusPO(Request $request)
+    {
+        $po = PO::where('uuid', $request->uuid);
+        if ($request->status == 1) {
+            $po->update([
+                'status' => $request->status,
+                'approved_date' => now()
+            ]);
+        } else {
+            $po->update([
+                'status' => $request->status
+            ]);
+        }
+
+        if ($po) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+
+        return response()->json([
+            'success' => $status
+        ]);
+    }
 }

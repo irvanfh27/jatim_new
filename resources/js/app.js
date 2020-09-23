@@ -8,7 +8,7 @@ window.Vue = require('vue');
 require('./bootstrap');
 require('./component');
 require('./library');
-
+import VueNumeric from 'vue-numeric'
 import router from './router';
 import Vuetify from 'vuetify';
 
@@ -65,6 +65,9 @@ const app = new Vue({
             return BaseUrl(path);
         }
     },
+    components: {
+        VueNumeric
+    }
 });
 
 export default new Vuetify({

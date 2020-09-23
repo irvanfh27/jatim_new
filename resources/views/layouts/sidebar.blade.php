@@ -32,10 +32,16 @@
                             <a :href="href" @click="navigate">PO</a>
                         </li>
                     </router-link>
-                    <li>
-                        <a class="{{ request()->segment(2) == 'approval' ? ' active' : '' }}"
-                           href="{{ route('po.approval.index') }}">Approval PO</a>
-                    </li>
+                    <router-link :to="{ name: 'poApprove'}" v-slot="{ href, navigate, isActive }">
+                        <li :class="[isActive && 'active']">
+                            <a :href="href" @click="navigate">Approval PO</a>
+                        </li>
+                    </router-link>
+                    <router-link :to="{ name: 'poReceive'}" v-slot="{ href, navigate, isActive }">
+                        <li :class="[isActive && 'active']">
+                            <a :href="href" @click="navigate">Receive PO</a>
+                        </li>
+                    </router-link>
                     <br>
                     <li>
                         <a class="{{ request()->segment(2) == 'uoms' ? ' active' : '' }}"

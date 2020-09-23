@@ -53,13 +53,17 @@ Route::prefix('v1')->namespace('API\\V1\\')->group(function () {
         });
     });
 
-    //PO
+    /**
+     * PO ROUTE
+     */
     Route::name('po.')->prefix('po')->namespace('PO\\')->group(function () {
 
-        Route::post('insertPODetail', 'POController@insertPODetail');
-        Route::get('listPODetail', 'POController@listPODetail');
+        Route::post('updateStatusPO', 'POController@updateStatusPO');
+        Route::patch('po-detail/confirm-receive-po', 'PODetailController@ConfirmReceivePO');
+
         Route::resources([
             'po' => 'POController',
+            'po-detail' => 'PODetailController',
             'sign' => 'MasterSignController'
         ]);
 
@@ -105,6 +109,10 @@ Route::prefix('v1')->namespace('API\\V1\\')->group(function () {
             ];
         }
         return response()->json($data);
+    });
+
+    Route::get('/uom', function (){
+       return DB::table('uom')->get();
     });
 
 });

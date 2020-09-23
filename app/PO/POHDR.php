@@ -5,6 +5,7 @@ namespace App\PO;
 use App\Model\Configuration\GeneralVendor;
 use App\Model\Configuration\Stockpile;
 use App\Model\PO\MasterSign;
+use App\Model\PO\PODetail;
 use Illuminate\Database\Eloquent\Model;
 
 class POHDR extends Model
@@ -15,7 +16,7 @@ class POHDR extends Model
     protected $appends = ['stockpile_name', 'general_vendor_name', 'status_po'];
     protected $fillable = [
         'no_po', 'general_vendor_id', 'no_penawaran', 'tanggal', 'memo', 'currency_id', 'exchangerate',
-        'stockpile_id', 'sign_id', 'toc', 'totalppn', 'totalpph', 'totalall', 'entry_by'
+        'stockpile_id', 'sign_id', 'toc', 'totalppn', 'totalpph', 'totalall', 'entry_by', 'gv_bank_id', 'uuid', 'grandtotal','approved_date'
     ];
 
 
@@ -34,14 +35,19 @@ class POHDR extends Model
         return $this->belongsTo(MasterSign::class, 'sign_id', 'idmaster_sign');
     }
 
+    public function po_detail()
+    {
+        return $this->hasMany(PODetail::class, 'no_po', 'no_po');
+    }
+
     public function getStockpileNameAttribute()
     {
-        return $this->stockpile->name;
+        return isset($this->stockpile->name) ? $this->stockpile->name : NULL;
     }
 
     public function getGeneralVendorNameAttribute()
     {
-        return $this->generalVendor->general_vendor_name;
+        return isset($this->generalVendor->general_vendor_name) ? $this->generalVendor->general_vendor_name : NULL;
     }
 
     public function getStatusPoAttribute()
@@ -49,16 +55,18 @@ class POHDR extends Model
         if ($this->status == 0) {
             $status = 'On Process';
         } elseif ($this->status == 1) {
-            $status = 'Invoice';
+            $status = 'Approve';
 
         } elseif ($this->status == 2) {
-            $status = 'Paid';
+            $status = 'Receive';
 
         } elseif ($this->status == 3) {
             $status = 'Reject';
 
         } elseif ($this->status == 4) {
             $status = 'Cancel';
+        } elseif ($this->status == 5){
+            $status = 'Complete';
         }
         return $status;
     }
