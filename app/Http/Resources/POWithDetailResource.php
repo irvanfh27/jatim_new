@@ -38,6 +38,14 @@ class POWithDetailResource extends JsonResource
             'stockpile_name' => $this->stockpile_name,
             'general_vendor_name' => $this->general_vendor_name,
             'status_po' => $this->status_po,
+            'check_by' => $this->sign->name,
+            'gv_bank_id' => $this->gv_bank_id,
+            'prepare_by' => isset($this->user->name) ? $this->user->name : '',
+            'bank_name' => isset($this->gv_bank->bank_name) ? $this->gv_bank->bank_name : '',
+            'branch' => isset($this->gv_bank->branch) ? $this->gv_bank->branch : '',
+            'account_no' => isset($this->gv_bank->account_no) ? $this->gv_bank->account_no : '',
+            'swift_code' => isset($this->gv_bank->swift_code) ? $this->gv_bank->swift_code : '',
+
             'po_details' => PODetailResource::collection($this->po_detail)
         ];
     }

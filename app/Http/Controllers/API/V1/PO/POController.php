@@ -43,7 +43,7 @@ class POController extends Controller
         if ($request->status) {
             $po = $po->where('status', $request->status);
         }
-        $po = $po->orderBy('entry_date','desc')->get();
+        $po = $po->orderBy('entry_date', 'desc')->get();
         return POResource::collection($po);
     }
 
@@ -55,6 +55,7 @@ class POController extends Controller
      */
     public function store(Request $request)
     {
+
         $noPO = $this->getPONo();
         if ($request->no_po != $noPO) {
             PODetail::where('no_po', $request->no_po)->update([
@@ -107,12 +108,12 @@ class POController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $po)
     {
-        $request->validate($this->rules);
         $input = $request->all();
-        $input['updated_by'] = auth()->user()->id;
-        PO::update($input);
+        $input['updated_by'] = auth('api')->user()->id;
+        $input['status'] = 0;
+        PO::findOrFail($po)->update($input);
     }
 
     /**

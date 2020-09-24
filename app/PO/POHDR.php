@@ -3,9 +3,11 @@
 namespace App\PO;
 
 use App\Model\Configuration\GeneralVendor;
+use App\Model\Configuration\GeneralVendorBank;
 use App\Model\Configuration\Stockpile;
 use App\Model\PO\MasterSign;
 use App\Model\PO\PODetail;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class POHDR extends Model
@@ -16,7 +18,7 @@ class POHDR extends Model
     protected $appends = ['stockpile_name', 'general_vendor_name', 'status_po'];
     protected $fillable = [
         'no_po', 'general_vendor_id', 'no_penawaran', 'tanggal', 'memo', 'currency_id', 'exchangerate',
-        'stockpile_id', 'sign_id', 'toc', 'totalppn', 'totalpph', 'totalall', 'entry_by', 'gv_bank_id', 'uuid', 'grandtotal','approved_date'
+        'stockpile_id', 'sign_id', 'toc', 'totalppn', 'totalpph', 'totalall', 'entry_by', 'gv_bank_id', 'uuid', 'grandtotal','approved_date','gv_bank_id'
     ];
 
 
@@ -35,9 +37,18 @@ class POHDR extends Model
         return $this->belongsTo(MasterSign::class, 'sign_id', 'idmaster_sign');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'entry_by','id');
+    }
     public function po_detail()
     {
         return $this->hasMany(PODetail::class, 'no_po', 'no_po');
+    }
+
+    public function gv_bank()
+    {
+        return $this->belongsTo(GeneralVendorBank::class,'gv_bank_id','gv_bank_id');
     }
 
     public function getStockpileNameAttribute()

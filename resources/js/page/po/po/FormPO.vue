@@ -400,32 +400,45 @@
                     currency_id: this.form.currency_id,
                     toc: this.form.toc,
                     sign_id: this.form.sign_id,
+                    gv_bank_id: this.form.gv_bank_id
                 };
-
                 if (this.$route.params.uuid) {
                     const method = {
-                        _method: 'PATCH'
+                        _method: "PATCH"
                     }
+                    const urlAPI = this.$parent.MakeUrl('po/po/' + this.$route.params.uuid)
                     Object.assign(payload, method);
+                    try {
+
+                        const res = await axios.post(urlAPI, payload);
+                        Vue.swal({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Successfully Insert Data!"
+                        }).then(next => {
+                            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+                        });
+                        console.log(res);
+                    } catch (e) {
+                        this.errors = e.response.data.errors;
+                    }
+                } else {
+                    try {
+                        const res = await axios.post(this.$parent.MakeUrl('po/po'), payload);
+                        Vue.swal({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Successfully Insert Data!"
+                        }).then(next => {
+                            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+                        });
+                        console.log(res);
+                    } catch (e) {
+                        this.errors = e.response.data.errors;
+                    }
                 }
 
-                try {
-                    const res = await axios.post(this.$parent.MakeUrl('po/po'), payload);
-                    Vue.swal({
-                        icon: "success",
-                        title: "Success!",
-                        text: "Successfully Insert Data!"
-                    }).then(next => {
-                        window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
-                    });
-                    console.log(res);
-                    // console.log(config.url);
-                } catch (e) {
-                    console.log('error');
-                    this.errors = e.response.data.errors;
-                    console.error(e.response.data);
-                    this.loadingSubmit = false;
-                }
+
             },
             getData() {
                 axios.all([

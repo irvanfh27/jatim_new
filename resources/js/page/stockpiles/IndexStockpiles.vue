@@ -17,6 +17,7 @@
         computed: {
             headers() {
                 return [
+                    {text: 'Actions', value: 'actions', sortable: false},
                     {
                         text: "Code",
                         align: "left",
@@ -51,7 +52,6 @@
                             return (f + '').toLowerCase().includes(this.search.status.toLowerCase())
                         }
                     },
-                    {text: 'Actions', value: 'actions', sortable: false},
                 ];
             }
         },

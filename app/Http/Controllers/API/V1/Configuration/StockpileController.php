@@ -105,7 +105,7 @@ class StockpileController extends Controller
      */
     public function show(Stockpile $stockpile)
     {
-
+        return $stockpile;
     }
 
     /**

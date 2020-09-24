@@ -43,7 +43,6 @@
                                     :item-value="form.value"
                                     :item-text="form.text"
                                     v-else-if="form.type === 'option'">
-
                                 </v-autocomplete>
                                 <v-textarea
                                     v-model="data[form.model]"
@@ -117,7 +116,7 @@
             getData() {
                 if (this.$route.params.uuid) {
                     axios.get(this.config.url + '/' + this.$route.params.uuid).then(res => {
-                        this.form = res.data;
+                        this.data = res.data;
                         console.log(res);
                     });
                 }

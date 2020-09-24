@@ -10,7 +10,8 @@
                 title: 'PO',
                 routeAdd: 'po.create',
                 routeEdit: 'po.edit',
-                routeDelete: false,
+                routePrint:'po.print',
+                routeDelete: true,
                 urlAPI: 'po/po'
             },
         }),

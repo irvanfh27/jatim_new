@@ -43,16 +43,16 @@
                                 <v-icon
                                     small
                                     @click="deleteItem(item)"
-                                    v-if="config.routeDelete"
+                                    v-if="config.routeDelete && item.status == 0"
                                 >
                                     mdi-delete
                                 </v-icon>
                                 <v-icon
                                     small
                                     @click="printItem(item)"
-                                    v-if="config.routePrint"
+                                    v-if="config.routePrint && item.status == 0"
                                 >
-                                    mdi-delete
+                                    mdi-printer
                                 </v-icon>
 
                             </template>

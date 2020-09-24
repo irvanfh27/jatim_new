@@ -11,6 +11,7 @@ import DetailPO from "./page/po/po/DetailPO";
 import IndexApprovalPO from "./page/po/po/IndexApprovalPO";
 import IndexReceivePO from "./page/po/po/IndexReceivePO";
 import FormReceive from "./page/po/po/FormReceive";
+import PrintPO from "./page/po/po/PrintPO";
 
 Vue.use(VueRouter);
 const router = new VueRouter({
@@ -55,6 +56,11 @@ const router = new VueRouter({
             path: '/dashboard/po/:uuid/detail',
             name: "po.detail",
             component: DetailPO
+        },
+        {
+            path: '/dashboard/po/:uuid/print',
+            name: "po.print",
+            component: PrintPO
         },
         {
             path: '/dashboard/po-approve',

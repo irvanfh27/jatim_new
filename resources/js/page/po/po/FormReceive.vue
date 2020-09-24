@@ -31,7 +31,7 @@
                                             <th class="text-left">PPH</th>
                                             <th class="text-left">Total</th>
                                             <th class="text-left">Qty Confirm</th>
-                                            <th class="text-left">Receive Date</th>
+                                            <th class="text-left" width="50px">Receive Date</th>
                                             <th class="text-left">Receiver</th>
                                         </tr>
                                         </thead>
@@ -52,10 +52,31 @@
                                                     v-model="item.qty_confirm"
                                                 />
                                             </td>
-                                            <td>
+                                            <td width="50px">
                                                 <v-text-field
                                                     v-model="item.receive_date"
                                                 />
+                                                <!--                                                <v-menu-->
+                                                <!--                                                    v-model="date"-->
+                                                <!--                                                    :close-on-content-click="false"-->
+                                                <!--                                                    :nudge-right="40"-->
+                                                <!--                                                    transition="scale-transition"-->
+                                                <!--                                                    offset-y-->
+                                                <!--                                                    min-width="290px"-->
+                                                <!--                                                >-->
+                                                <!--                                                    <template v-slot:activator="{ on, attrs }">-->
+                                                <!--                                                        <v-text-field-->
+                                                <!--                                                            v-model="item.receive_date"-->
+                                                <!--                                                            label="Picker without buttons"-->
+                                                <!--                                                            prepend-icon="event"-->
+                                                <!--                                                            readonly-->
+                                                <!--                                                            v-bind="attrs"-->
+                                                <!--                                                            v-on="on"-->
+                                                <!--                                                        ></v-text-field>-->
+                                                <!--                                                    </template>-->
+                                                <!--                                                    <v-date-picker v-model="item.receive_date"-->
+                                                <!--                                                                   @input="date = false"></v-date-picker>-->
+                                                <!--                                                </v-menu>-->
                                             <td>
                                                 <v-text-field
                                                     v-model="item.receiver"
@@ -101,7 +122,7 @@
                 modal: false,
                 receive_date: [],
                 checked: 0,
-                date: '',
+                date: false,
                 model: '',
                 po_details: []
             };
