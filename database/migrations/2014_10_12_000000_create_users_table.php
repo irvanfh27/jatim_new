@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('stockpile_id')->nullable();
+            $table->tinyInteger('active')->nullable();
 //            $table->foreign('stockpile_id')->on('stockpiles')->references('id')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
