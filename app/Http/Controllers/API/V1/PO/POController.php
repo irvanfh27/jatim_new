@@ -9,7 +9,7 @@ use App\Model\Configuration\GeneralVendor;
 use App\Model\PO\PODetail;
 use App\PO\POHDR;
 use Illuminate\Http\Request;
-use App\PO\POHDR as PO;
+use App\Model\PO\POHDR as PO;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 

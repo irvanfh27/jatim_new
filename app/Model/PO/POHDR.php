@@ -1,12 +1,10 @@
 <?php
 
-namespace App\PO;
+namespace App\Model\PO;
 
 use App\Model\Configuration\GeneralVendor;
 use App\Model\Configuration\GeneralVendorBank;
 use App\Model\Configuration\Stockpile;
-use App\Model\PO\MasterSign;
-use App\Model\PO\PODetail;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
