@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class MasterItem extends Model
 {
+    const CREATED_AT = 'entry_date';
+    const UPDATED_AT = 'sync_date';
+
     protected $table = 'master_item';
     protected $primaryKey = 'idmaster_item';
     protected $fillable = ['uuid', 'name', 'code', 'uom_id', 'group_item_id', 'created_by', 'updated_by'];
-    protected $appends = ['uom_name','group_item_name'];
+    protected $appends = ['uom_name', 'group_item_name'];
 
     public function uom()
     {

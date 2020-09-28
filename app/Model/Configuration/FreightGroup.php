@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class FreightGroup extends Model
 {
     const CREATED_AT = 'entry_date';
-    const UPDATED_AT = 'updated_at';
+    const UPDATED_AT = 'sync_date';
 
     protected $table = 'freight_group';
     protected $primaryKey = 'freight_group_id';

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MasterGroupItem extends Model
 {
-    public const CREATED_AT = 'entry_date';
+    const CREATED_AT = 'entry_date';
 
     protected $table = 'master_groupitem';
     protected $primaryKey = 'idmaster_groupitem';

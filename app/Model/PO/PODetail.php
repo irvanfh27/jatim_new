@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class PODetail extends Model
 {
     const CREATED_AT = 'entry_date';
+    const UPDATED_AT = 'sync_date';
+
     protected $table = 'po_detail';
     protected $primaryKey = 'idpo_detail';
     protected $fillable = [

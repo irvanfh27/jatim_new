@@ -13,12 +13,14 @@ use Illuminate\Database\Eloquent\Model;
 class POHDR extends Model
 {
     const CREATED_AT = 'entry_date';
+    const UPDATED_AT = 'sync_date';
+
     protected $table = 'po_hdr';
     protected $primaryKey = 'idpo_hdr';
     protected $appends = ['stockpile_name', 'general_vendor_name', 'status_po'];
     protected $fillable = [
         'no_po', 'general_vendor_id', 'no_penawaran', 'tanggal', 'memo', 'currency_id', 'exchangerate',
-        'stockpile_id', 'sign_id', 'toc', 'totalppn', 'totalpph', 'totalall', 'entry_by', 'gv_bank_id', 'uuid', 'grandtotal','approved_date','gv_bank_id'
+        'stockpile_id', 'sign_id', 'toc', 'totalppn', 'totalpph', 'totalall', 'entry_by', 'gv_bank_id', 'uuid', 'grandtotal', 'approved_date', 'gv_bank_id'
     ];
 
 
@@ -39,8 +41,9 @@ class POHDR extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'entry_by','id');
+        return $this->belongsTo(User::class, 'entry_by', 'id');
     }
+
     public function po_detail()
     {
         return $this->hasMany(PODetail::class, 'no_po', 'no_po');
@@ -48,7 +51,7 @@ class POHDR extends Model
 
     public function gv_bank()
     {
-        return $this->belongsTo(GeneralVendorBank::class,'gv_bank_id','gv_bank_id');
+        return $this->belongsTo(GeneralVendorBank::class, 'gv_bank_id', 'gv_bank_id');
     }
 
     public function getStockpileNameAttribute()
@@ -76,7 +79,7 @@ class POHDR extends Model
 
         } elseif ($this->status == 4) {
             $status = 'Cancel';
-        } elseif ($this->status == 5){
+        } elseif ($this->status == 5) {
             $status = 'Complete';
         }
         return $status;

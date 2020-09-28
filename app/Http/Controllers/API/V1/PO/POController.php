@@ -21,13 +21,6 @@ class POController extends Controller
 
     public function __construct()
     {
-
-        $this->forms = [
-            array('type' => 'text', 'label' => '', 'name' => '', 'place_holder' => '', 'mandatory' => true),
-            array('type' => 'textarea', 'label' => '', 'name' => '', 'place_holder' => '', 'mandatory' => false),
-            array('type' => 'select_option', 'label' => '', 'name' => '', 'variable' => '', 'option_value' => 'value', '' => 'label', 'mandatory' => true),
-        ];
-
         $this->rules = [
         ];
     }
@@ -35,7 +28,8 @@ class POController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
