@@ -7,7 +7,6 @@ use App\Http\Resources\POResource;
 use App\Http\Resources\POWithDetailResource;
 use App\Model\Configuration\GeneralVendor;
 use App\Model\PO\PODetail;
-use App\PO\POHDR;
 use Illuminate\Http\Request;
 use App\Model\PO\POHDR as PO;
 use Illuminate\Support\Facades\DB;
@@ -128,7 +127,7 @@ class POController extends Controller
         $yearMonth = date('ym');
 
         $checkPONo = 'PO-' . $stockpileName . '/' . $yearMonth;
-        $lastPO = POHDR::where('no_po', 'like', '%' . $checkPONo . '%')->orderBy('idpo_hdr', 'DESC')->first();
+        $lastPO = PO::where('no_po', 'like', '%' . $checkPONo . '%')->orderBy('idpo_hdr', 'DESC')->first();
         if (isset($lastPO)) {
             $splitPONo = explode('/', $lastPO->no_po);
             $lastExplode = count($splitPONo) - 1;
