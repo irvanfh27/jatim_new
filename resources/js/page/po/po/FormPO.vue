@@ -119,7 +119,7 @@
                                                         <v-autocomplete
                                                             :items="data.stockpiles"
                                                             v-model="formModal.stockpileId"
-                                                            item-text="name"
+                                                            item-text="stockpile_name"
                                                             item-value="stockpile_id"
                                                             label="Stockpiles*"
                                                         >
@@ -449,7 +449,7 @@
                     axios.get(this.$parent.MakeUrl("configuration/shipment?type=option")),
                     axios.get(this.$parent.MakeUrl("po/group-item?type=option")),
                     axios.get(this.$parent.MakeUrl("po/getPONo")),
-                    axios.get(this.$parent.MakeUrl("uom")),
+                    axios.get(this.$parent.MakeUrl("po/uom")),
 
                 ]).then(
                     axios.spread((signs, stockpiles, vendor, currency, shipments, groupItems, po, uom) => {

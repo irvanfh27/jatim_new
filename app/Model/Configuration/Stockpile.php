@@ -8,13 +8,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stockpile extends Model
 {
-    use SoftDeletes, SearchTrait;
+    use SearchTrait;
+
+    const CREATED_AT = 'entry_date';
+    const UPDATED_AT = 'sync_date';
+
+    protected $table = 'stockpile';
 
     protected $primaryKey = 'stockpile_id';
 
     protected $appends = ['status'];
 
-    protected $fillable = ['uuid', 'code', 'name', 'address', 'active', 'created_by', 'updated_by'];
+    protected $fillable = ['uuid', 'code', 'name', 'address', 'active', 'entry_by', 'sync_by'];
 
     protected $searchable = [
         'code' => [

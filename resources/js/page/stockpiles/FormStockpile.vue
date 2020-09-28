@@ -13,17 +13,17 @@
                 forms: [
                     {
                         label: 'Code',
-                        model: 'code',
+                        model: 'stockpile_code',
                         mandatory: true,
                     },
                     {
                         label: 'Name',
-                        model: 'name',
+                        model: 'stockpile_name',
                         mandatory: true,
                     },
                     {
                         label: 'Address',
-                        model: 'address',
+                        model: 'stockpile_address',
                         type: 'textarea',
                         placeholder: "",
                         mandatory: false,

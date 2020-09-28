@@ -12,6 +12,7 @@ import IndexApprovalPO from "./page/po/po/IndexApprovalPO";
 import IndexReceivePO from "./page/po/po/IndexReceivePO";
 import FormReceive from "./page/po/po/FormReceive";
 import PrintPO from "./page/po/po/PrintPO";
+import IndexUser from "./page/configuration/user/IndexUser";
 
 Vue.use(VueRouter);
 const router = new VueRouter({
@@ -83,6 +84,7 @@ const router = new VueRouter({
             name: "poReceive.detail",
             component: FormReceive
         },
+        //Freight Group
         {
             path: '/dashboard/configuration/freightgroup',
             name: "freightgroup",
@@ -91,6 +93,17 @@ const router = new VueRouter({
         {
             path: '/dashboard/configuration/freightgroup/create',
             name: "freightgroup.create",
+            component: CreateFreightGroup
+        },
+        //User
+        {
+            path: '/dashboard/configuration/user',
+            name: "user",
+            component: IndexUser
+        },
+        {
+            path: '/dashboard/configuration/user/create',
+            name: "user.create",
             component: CreateFreightGroup
         },
     ],

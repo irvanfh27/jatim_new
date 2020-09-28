@@ -26,27 +26,15 @@ Auth::routes();
 Route::get('/dashboard', 'HomeController@index')->name('home');
 Route::get('/dashboard/{any}', 'HomeController@index')->where('any', '.*');
 
-//Route::middleware('auth')->group(function () {
-////    Configuration Route
-//    Route::name('configuration.')->prefix('configuration')->namespace('Configuration\\')->group(function () {
-//        Route::resources([
-//            'stockpiles' => 'StockpileController',
-//            'users' => 'UserController',
-//        ]);
-//    });
-//
-    Route::name('po.')->prefix('po')->namespace('PO\\')->group(function () {
-        Route::get('approval/print', 'ApprovalPOController@printApprovalPO')->name('approval.print');
-        Route::resources([
-            'uoms' => 'UomController',
-            'group-items' => 'MasterGroupItemController',
-            'items' => 'MasterItemController',
-            'signs' => 'MasterSignController',
-            'po' => 'POController',
-            'approval' => 'ApprovalPOController',
-        ]);
-    });
-//});
+Route::name('po.')->prefix('po')->namespace('PO\\')->group(function () {
+    Route::get('approval/print', 'ApprovalPOController@printApprovalPO')->name('approval.print');
+    Route::resources([
+        'uoms' => 'UomController',
+        'group-items' => 'MasterGroupItemController',
+        'items' => 'MasterItemController',
+        'signs' => 'MasterSignController',
+    ]);
+});
 
 
 Route::name('js.')->group(function () {

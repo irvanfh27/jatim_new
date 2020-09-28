@@ -105,11 +105,11 @@ class User extends Authenticatable
 
     public function getStockpileNameAttribute()
     {
-        return $this->stockpile->name;
+        return $this->stockpile->stockpile_name;
     }
 
     public function getStockpileCodeAttribute()
     {
-        return $this->stockpile->code;
+        return $this->stockpile->stockpile_code;
     }
 }

@@ -22,26 +22,26 @@
                         text: "Code",
                         align: "left",
                         sortable: false,
-                        value: "code",
+                        value: "stockpile_code",
                         filter: f => {
-                            if (!this.search.code) return true;
-                            return (f + '').toLowerCase().includes(this.search.code.toLowerCase())
+                            if (!this.search.stockpile_code) return true;
+                            return (f + '').toLowerCase().includes(this.search.stockpile_code.toLowerCase())
                         }
                     },
                     {
                         text: "Name",
-                        value: "name",
+                        value: "stockpile_name",
                         filter: f => {
-                            if (!this.search.name) return true;
-                            return (f + '').toLowerCase().includes(this.search.name.toLowerCase())
+                            if (!this.search.stockpile_name) return true;
+                            return (f + '').toLowerCase().includes(this.search.stockpile_name.toLowerCase())
                         }
                     },
                     {
                         text: "Address",
-                        value: "address",
+                        value: "stockpile_address",
                         filter: f => {
-                            if (!this.search.address) return true;
-                            return (f + '').toLowerCase().includes(this.search.address.toLowerCase())
+                            if (!this.search.stockpile_address) return true;
+                            return (f + '').toLowerCase().includes(this.search.stockpile_address.toLowerCase())
                         }
                     },
                     {

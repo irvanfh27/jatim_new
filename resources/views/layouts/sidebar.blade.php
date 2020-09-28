@@ -149,10 +149,11 @@
                     <span>Configuration</span>
                 </a>
                 <ul class="sub">
-                    <li>
-                        <a class="{{ request()->segment(2) == 'users' ? ' active' : '' }}"
-                           href="{{ route('configuration.users.index') }}">Users</a>
-                    </li>
+                    <router-link :to="{ name: 'user'}" v-slot="{ href, navigate, isActive }">
+                        <li :class="[isActive && 'active']">
+                            <a :href="href" @click="navigate">Users</a>
+                        </li>
+                    </router-link>
                     <li><a class="{{ request()->segment(2) == 'modules' ? ' active' : '' }}" href="chat_room.html">Modules</a>
                     </li>
                     <router-link :to="{ name: 'stockpiles'}" v-slot="{ href, navigate, isActive }">
