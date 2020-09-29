@@ -57,12 +57,20 @@
 
                             </template>
                             <template v-slot:no-data>
-                                <v-progress-circular
-                                    :size="200"
-                                    :width="20"
-                                    color="green"
-                                    indeterminate
-                                ></v-progress-circular>
+                                <div v-if="loading">
+                                    <div class="text-center p-3 text-muted">
+                                        <h5>No Results</h5>
+                                        <p>Looks like you have not added any data yet!</p>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <v-progress-circular
+                                        :size="200"
+                                        :width="20"
+                                        color="green"
+                                        indeterminate
+                                    ></v-progress-circular>
+                                </div>
                             </template>
                             <template v-slot:body.prepend>
                                 <tr>
@@ -88,6 +96,7 @@
         props: ['headers', 'config', 'search'],
         data: () => ({
             data: [],
+            loading: false,
         }),
         created() {
             this.getData();
